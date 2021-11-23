@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ekwus.ALoRa" Version="1.0.7187.24850" />
+    <PackageReference Include="MQTTnet" Version="3.1.0" />
+  </ItemGroup>
+
+</Project>
