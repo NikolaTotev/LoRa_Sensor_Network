@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoRa_Sensor_Network_Blazor_Server_App", "LoRa_Sensor_Network_Blazor_Server_App.csproj", "{5921A1E1-A86E-445E-BAB8-D598905B01B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5921A1E1-A86E-445E-BAB8-D598905B01B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5921A1E1-A86E-445E-BAB8-D598905B01B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5921A1E1-A86E-445E-BAB8-D598905B01B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5921A1E1-A86E-445E-BAB8-D598905B01B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88729339-BBD1-474D-99C2-9F75740A1DD0}
+	EndGlobalSection
+EndGlobal
