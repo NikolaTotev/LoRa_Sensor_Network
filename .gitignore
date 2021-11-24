@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 Sensor_Station_Firmware/Arduino MKR WAN 1300 with Kitronik NCT75/arduino_secrets.h
+Sensor_Station_Firmware/Arduino MKR WAN 1300 with Kitronik NCT75/Station_Firmware_w_NCT75/arduino_secrets.h
