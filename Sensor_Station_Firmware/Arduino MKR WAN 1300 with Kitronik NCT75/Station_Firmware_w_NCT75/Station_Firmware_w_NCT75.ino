@@ -88,10 +88,9 @@ void loop() {
   
   if (!modem.available()) {
     Serial.println("No downlink message received at this time.");
-    return;
   }
-  
-  char rcv[64];
+  else{
+     char rcv[64];
   int i = 0;
   while (modem.available()) {
     rcv[i++] = (char)modem.read();
@@ -102,9 +101,13 @@ void loop() {
     Serial.print(rcv[j] >> 4, HEX);
     Serial.print(rcv[j] & 0xF, HEX);
     Serial.print(" ");
+    }
+    Serial.println();
+
   }
   
-  Serial.println();
+ 
+  
 
   delay(120000); //Wait two minutes to send updated temp value.
 }
