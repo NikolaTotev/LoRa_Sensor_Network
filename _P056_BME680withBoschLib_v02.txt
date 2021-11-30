@@ -1,0 +1,421 @@
+#ifdef USES_P056
+//#######################################################################################################
+//#################################### Plugin 056: BME680 using Bosch-Lib ##########################
+//#######################################################################################################
+//BOSCH Lib
+//https://github.com/BoschSensortec/BSEC-Arduino-library
+//https://github.com/BoschSensortec/BSEC-Arduino-library/blob/master/examples/basic/basic.ino
+//Interessting:
+//https://github.com/BoschSensortec/BSEC-Arduino-library/issues/12  -> Stuck at IAQ 25 - solved by resetting EEPROM
+//https://github.com/BoschSensortec/BSEC-Arduino-library/issues/25 -> Stuck at IAQ 25 - my ticket
+//How-To-Use-Bosch-Lib
+//https://www.bjoerns-techblog.de/2017/11/bme680-mit-nodemcu-an-ttn/
+//https://wolfgangklenk.wordpress.com/2017/11/05/indoor-air-quality-iaq-measurement-with-bosch-bme680-and-stm32f103c8t6/
+/*
+  based on Bosch BME680 lib
+*/
+
+
+
+
+
+
+//#ifdef ESP8266  // Needed for precompile issues.
+
+#define PLUGIN_056
+#define PLUGIN_ID_056         056
+#define PLUGIN_NAME_056       "Environment - BME680 with IAQ by Bosch_8"
+#define PLUGIN_VALUENAME1_056 "Temperature"
+#define PLUGIN_VALUENAME2_056 "Humidity"
+#define PLUGIN_VALUENAME3_056 "Pressure"
+#define PLUGIN_VALUENAME4_056 "IAQ"
+
+
+	//ESPEasy framework can handle only 4 userValues
+	//see https://github.com/letscontrolit/ESPEasy/issues/1785
+	//#define PLUGIN_VALUENAME5_056 "Gas"
+	//#define PLUGIN_VALUENAME6_056 "RawTemperature"
+	//#define PLUGIN_VALUENAME7_056 "RawHumidity"
+	//#define PLUGIN_VALUENAME8_056 "AccuracyIAQ"
+
+
+#include "EEPROM.h"
+#include "bsec.h"
+
+#define STATE_SAVE_PERIOD	UINT32_C(360 * 60 * 1000) // 360 minutes - 4 times a day
+
+// Helper functions declarations
+void checkIaqSensorStatus(void);
+void errLeds(void);
+void loadState(void);
+void updateState(void);
+
+// Create an object of the class Bsec
+Bsec iaqSensor;
+uint8_t bsecState[BSEC_MAX_STATE_BLOB_SIZE] = {0};
+uint16_t stateUpdateCounter = 0;
+
+String output;
+
+boolean Plugin_056_init = false;
+
+boolean Plugin_056(byte function, struct EventStruct *event, String& string)
+{
+  bool success = false;
+
+  switch (function)
+  {
+
+    case PLUGIN_DEVICE_ADD:
+      {
+        Device[++deviceCount].Number = PLUGIN_ID_056;
+        Device[deviceCount].Type = DEVICE_TYPE_I2C;
+        Device[deviceCount].VType = SENSOR_TYPE_QUAD;
+        Device[deviceCount].Ports = 0;
+        Device[deviceCount].PullUpOption = false;
+        Device[deviceCount].InverseLogicOption = false;
+        Device[deviceCount].FormulaOption = true;
+        Device[deviceCount].ValueCount = 4;
+        Device[deviceCount].SendDataOption = true;
+        Device[deviceCount].TimerOption = true;
+        Device[deviceCount].GlobalSyncOption = true;
+        break;
+      }
+
+    case PLUGIN_GET_DEVICENAME:
+      {
+        string = F(PLUGIN_NAME_056);
+        break;
+      }
+
+    case PLUGIN_GET_DEVICEVALUENAMES:
+      {
+		strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[0], PSTR(PLUGIN_VALUENAME1_056));
+        strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[1], PSTR(PLUGIN_VALUENAME2_056));
+        strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[2], PSTR(PLUGIN_VALUENAME3_056));
+        strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[3], PSTR(PLUGIN_VALUENAME4_056));
+	
+		//ESPEasy framework can handle only 4 userValues
+		//see https://github.com/letscontrolit/ESPEasy/issues/1785
+        //strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[4], PSTR(PLUGIN_VALUENAME5_056));
+        //strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[5], PSTR(PLUGIN_VALUENAME6_056));
+        //strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[6], PSTR(PLUGIN_VALUENAME7_056));
+        //strcpy_P(ExtraTaskSettings.TaskDeviceValueNames[7], PSTR(PLUGIN_VALUENAME8_056));
+		
+        break;
+      }
+	  
+    case PLUGIN_WEBFORM_LOAD:
+      {
+        byte choice = Settings.TaskDevicePluginConfig[event->TaskIndex][0];
+        /*
+        String options[2];
+        options[0] = F("0x76 - default settings (SDO Low)");
+        options[1] = F("0x77 - alternate settings (SDO HIGH)");
+        */
+        int optionValues[2] = { 0x77, 0x76 };
+        addFormSelectorI2C(F("plugin_056_BME680_i2c"), 2, optionValues, choice);
+        addFormNote(F("SDO Low=0x76, High=0x77"));
+
+        addFormNumericBox(F("Altitude"), F("plugin_056_BME680_elev"), Settings.TaskDevicePluginConfig[event->TaskIndex][1]);
+        addUnit(F("m"));
+
+        success = true;
+        break;
+      }
+	  
+      case PLUGIN_WEBFORM_SAVE:
+	  {
+		Settings.TaskDevicePluginConfig[event->TaskIndex][0] = getFormItemInt(F("plugin_056_BME680_i2c"));
+		Settings.TaskDevicePluginConfig[event->TaskIndex][1] = getFormItemInt(F("plugin_056_BME680_elev"));
+		success = true;
+        break;
+      }
+	  
+    case PLUGIN_GET_DEVICEGPIONAMES:
+      {
+        event->String1 = F("GPIO &larr; TX");
+        event->String2 = F("GPIO &#8674; RX (optional)");
+        break;
+      }
+
+    case PLUGIN_INIT:
+      {
+		if (Plugin_056_init)
+		{
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT : Plugin_056 initialized == true");
+        }
+		else
+		{
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT : Plugin_056 initialized == false");
+		}
+		
+		if (!Plugin_056_init)
+        {
+			//delay(15000);
+            addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT  : init");
+			
+			output = "\nBSEC library version " + String(iaqSensor.version.major) + "." + String(iaqSensor.version.minor) + "." + String(iaqSensor.version.major_bugfix) + "." + String(iaqSensor.version.minor_bugfix);
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+
+			iaqSensor.begin(BME680_I2C_ADDR_SECONDARY, Wire);
+			
+			/*	ERASING EEPROM not helpful	
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT : Erasing EEPROM");
+			for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE + 1; i++)
+			EEPROM.write(i, 0);
+			EEPROM.commit();
+			*/
+			
+			//addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT  : Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ, IAQ accuracy, temperature [°C], relative humidity [%]");
+			//addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-INIT  : \nBSEC library version " + String(iaqSensor.version.major) + "." + String(iaqSensor.version.minor) + "." + String(iaqSensor.version.major_bugfix) + "." + String(iaqSensor.version.minor_bugfix));
+			
+			checkIaqSensorStatus();
+		
+			//Not needed - see Bosch BME680 "Basic"-example 
+			//Can be used only in pair with loadState and safeState
+			//loadState();
+			
+			
+			/*
+			bsec_virtual_sensor_t sensorList[7] = {
+			BSEC_OUTPUT_RAW_TEMPERATURE,
+			BSEC_OUTPUT_RAW_PRESSURE,
+			BSEC_OUTPUT_RAW_HUMIDITY,
+			BSEC_OUTPUT_RAW_GAS,
+			BSEC_OUTPUT_IAQ_ESTIMATE,
+			BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
+			BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
+			//BSEC_OUTPUT_STABILIZATION_STATUS,
+			//BSEC_OUTPUT_RUN_IN_STATUS,
+			};
+			*/
+			
+			bsec_virtual_sensor_t sensorList[10] = {
+			BSEC_OUTPUT_RAW_TEMPERATURE,
+			BSEC_OUTPUT_RAW_PRESSURE,
+			BSEC_OUTPUT_RAW_HUMIDITY,
+			BSEC_OUTPUT_RAW_GAS,
+			BSEC_OUTPUT_IAQ,
+			BSEC_OUTPUT_STATIC_IAQ,
+			BSEC_OUTPUT_CO2_EQUIVALENT,
+			BSEC_OUTPUT_BREATH_VOC_EQUIVALENT,
+			BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
+			BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
+			};
+
+			//iaqSensor.updateSubscription(sensorList, 7, BSEC_SAMPLE_RATE_LP);
+			iaqSensor.updateSubscription(sensorList, 10, BSEC_SAMPLE_RATE_LP);
+			checkIaqSensorStatus();
+
+            Plugin_056_init = true;
+			success = true;
+            break;
+        }
+	}
+	
+	case PLUGIN_READ:
+	{
+        if (Plugin_056_init)
+        {
+		
+		  if (iaqSensor.run()) { // If new data is available
+		  
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : SensorStatus is " + String(iaqSensor.status));
+			
+			//Print Bosch-Lib version
+			output = "\nBSEC library version " + String(iaqSensor.version.major) + "." + String(iaqSensor.version.minor) + "." + String(iaqSensor.version.major_bugfix) + "." + String(iaqSensor.version.minor_bugfix);
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+			
+			//output = "Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ, IAQ accuracy, temperature [°C], relative humidity [%]";
+		    output = "Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ,";
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+			
+			output =  "IAQ accuracy, temperature [°C], relative humidity [%], Static IAQ, CO2 equivalent, breath VOC equivalent";
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+			
+			/* Valid for Bosch lib version 1.4.6.0
+			output = String(millis());
+			output += ", " + String(iaqSensor.rawTemperature);
+			output += ", " + String(iaqSensor.pressure);
+			output += ", " + String(iaqSensor.rawHumidity);
+			output += ", " + String(iaqSensor.gasResistance);
+			output += ", " + String(iaqSensor.iaqEstimate);
+			output += ", " + String(iaqSensor.iaqAccuracy);
+			output += ", " + String(iaqSensor.temperature);
+			output += ", " + String(iaqSensor.humidity);
+			//output += ", " + String(iaqSensor.stabilizationStatus);
+			//output += ", " + String(iaqSensor.runInStatus);
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+			*/
+			
+			//Valid for Bosch lib version 1.4.7.1
+			output = String(millis());
+			output += ", " + String(iaqSensor.rawTemperature);
+			output += ", " + String(iaqSensor.pressure);
+			output += ", " + String(iaqSensor.rawHumidity);
+			output += ", " + String(iaqSensor.gasResistance);
+			output += ", " + String(iaqSensor.iaqEstimate);
+			output += ", " + String(iaqSensor.iaqAccuracy);
+			output += ", " + String(iaqSensor.temperature);
+			output += ", " + String(iaqSensor.humidity);
+			output += ", " + String(iaqSensor.staticIaq);
+			output += ", " + String(iaqSensor.co2Equivalent);
+			output += ", " + String(iaqSensor.breathVocEquivalent);
+			addLog(LOG_LEVEL_ERROR, "BME680-PlugIn-Read : " + output);
+			
+
+			UserVar[event->BaseVarIndex + 0] = iaqSensor.temperature;
+			UserVar[event->BaseVarIndex + 1] = iaqSensor.humidity;
+			UserVar[event->BaseVarIndex + 2] = iaqSensor.pressure;
+			UserVar[event->BaseVarIndex + 3] = iaqSensor.iaqEstimate;
+			
+			
+			//ESPEasy framework can handle only 4 userValues
+			//see https://github.com/letscontrolit/ESPEasy/issues/1785
+			//UserVar[event->BaseVarIndex + 4] = iaqSensor.gasResistance;
+			//UserVar[event->BaseVarIndex + 5] = iaqSensor.rawTemperature;
+			//UserVar[event->BaseVarIndex + 6] = iaqSensor.rawHumidity;
+			//UserVar[event->BaseVarIndex + 7] = iaqSensor.iaqAccuracy;
+			
+			//Not needed - see Bosch BME680 "Basic"-example
+			//Can be used only in pair with loadState and safeState
+			//updateState();
+			
+			success = true;
+		  } else {
+			addLog(LOG_LEVEL_ERROR, "BME680 : No new data available!");
+			checkIaqSensorStatus();
+			success = false;
+            break;
+		  }
+        
+		
+        //break;
+        }
+       
+	    //success = true;
+		
+        break;
+    }
+
+  }
+
+  return success;
+}
+
+
+
+
+// Helper function definitions
+void checkIaqSensorStatus(void)
+{
+  addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : checkIaqSensorStatus");
+  addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : " + String(iaqSensor.status));
+  
+  if (iaqSensor.status != BSEC_OK) {
+    if (iaqSensor.status < BSEC_OK) {
+      output = "BSEC error code : " + String(iaqSensor.status);
+      //Serial.println(output);
+	  addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : " + output);
+      for (;;)
+        errLeds(); /* Halt in case of failure */
+    } else {
+      output = "BSEC warning code : " + String(iaqSensor.status);
+      addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : " + output);
+	  //Serial.println(output);
+    }
+  }
+
+  if (iaqSensor.bme680Status != BME680_OK) {
+    if (iaqSensor.bme680Status < BME680_OK) {
+      output = "BME680 error code : " + String(iaqSensor.bme680Status);
+      addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : " + output);
+	  //Serial.println(output);
+      for (;;)
+        errLeds(); /* Halt in case of failure */
+    } else {
+      output = "BME680 warning code : " + String(iaqSensor.bme680Status);
+	  addLog(LOG_LEVEL_ERROR, "BME680-checkIaqSensorStatus : " + output);
+      //Serial.println(output);
+    }
+  }
+}
+
+void errLeds(void)
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(100);
+}
+
+
+void loadState(void)
+{
+	addLog(LOG_LEVEL_ERROR, "loadState-BME680 : loadState");
+
+  if (EEPROM.read(0) == BSEC_MAX_STATE_BLOB_SIZE) {
+    // Existing state in EEPROM
+    //Serial.println("Reading state from EEPROM");
+	addLog(LOG_LEVEL_ERROR, "loadState-BME680 : Reading state from EEPROM");
+    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE; i++) {
+      bsecState[i] = EEPROM.read(i + 1);
+      addLog(LOG_LEVEL_ERROR, "loadState-tbd...");
+	  //Serial.println(bsecState[i], HEX);
+    }
+
+    iaqSensor.setState(bsecState);
+    checkIaqSensorStatus();
+  } else {
+    // Erase the EEPROM with zeroes
+	addLog(LOG_LEVEL_ERROR, "loadState-BME680 : Erasing EEPROM");
+    //Serial.println("Erasing EEPROM");
+
+    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE + 1; i++)
+      EEPROM.write(i, 0);
+
+    EEPROM.commit();
+  }
+}
+
+
+void updateState(void)
+{
+	addLog(LOG_LEVEL_ERROR, "BME680 : UpdateState");
+	
+  bool update = false;
+  if (stateUpdateCounter == 0) {
+    /* First state update when IAQ accuracy is >= 1 */
+    if (iaqSensor.iaqAccuracy >= 3) {
+      update = true;
+      stateUpdateCounter++;
+    }
+  } else {
+    /* Update every STATE_SAVE_PERIOD minutes */
+    if ((stateUpdateCounter * STATE_SAVE_PERIOD) < millis()) {
+      update = true;
+      stateUpdateCounter++;
+    }
+  }
+
+  if (update) {
+    iaqSensor.getState(bsecState);
+    checkIaqSensorStatus();
+	
+	addLog(LOG_LEVEL_ERROR, "BME680 : Writing state to EEPROM");
+    //Serial.println("Writing state to EEPROM");
+
+    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE ; i++) {
+      EEPROM.write(i + 1, bsecState[i]);
+	  addLog(LOG_LEVEL_ERROR, "tbd.");
+      //Serial.println(bsecState[i], HEX);
+    }
+
+    EEPROM.write(0, BSEC_MAX_STATE_BLOB_SIZE);
+    EEPROM.commit();
+  }
+}
+
+#endif // USES_P056
