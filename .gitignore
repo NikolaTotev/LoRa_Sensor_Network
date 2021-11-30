@@ -351,3 +351,4 @@ MigrationBackup/
 Sensor_Station_Firmware/Arduino MKR WAN 1300 with Kitronik NCT75/arduino_secrets.h
 Sensor_Station_Firmware/Arduino MKR WAN 1300 with Kitronik NCT75/Station_Firmware_w_NCT75/arduino_secrets.h
 Sensor_Station_Firmware/Arduino MKR WAN 1300 with BME688 and SI1145/Station_Firmware_w_BME688_SI1145/arduino_secrets.h
+LoRa_Sensor_Network_Blazor_Server_App/appsettings.json

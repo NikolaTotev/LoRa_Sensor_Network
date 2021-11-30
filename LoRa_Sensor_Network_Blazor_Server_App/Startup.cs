@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App
 {
@@ -30,7 +31,10 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
+            services.Configure<DbConnectionOptions>(Configuration.GetSection(nameof(DbConnectionOptions)));
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
