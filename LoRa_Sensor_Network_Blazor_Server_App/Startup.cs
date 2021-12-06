@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App
@@ -32,7 +33,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.Configure<DbConnectionOptions>(Configuration.GetSection(nameof(DbConnectionOptions)));
-
+            services.AddSingleton<UplinkDataAccess>();
         }
 
 
