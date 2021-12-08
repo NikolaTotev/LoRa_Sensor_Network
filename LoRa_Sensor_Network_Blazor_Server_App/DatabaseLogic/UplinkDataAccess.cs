@@ -15,18 +15,20 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
     public class UplinkDataAccess
     {
         private DbConnectionOptions m_Options;
-        public UplinkDataAccess()
+        private readonly IConfiguration configuration;
+
+        public UplinkDataAccess(IConfiguration config)
         {
-            InsertSensorReading();
+            configuration = config;
         }
 
         public void InsertSensorReading()
         {
             ConfigurationManager manager = new ConfigurationManager();
-            string conString = manager.GetConnectionString("LoraDB");
+            string conString = configuration.GetConnectionString("LoraDB");
             using (SqlConnection connection = new SqlConnection(conString))
             {
-                connection.Execute("insert into uplinkdata (uplinkID, uplinkData) values (1, testData)");
+                connection.Execute("insert into uplinkdata (uplinkID) values (1)");
             }
         }
     }
