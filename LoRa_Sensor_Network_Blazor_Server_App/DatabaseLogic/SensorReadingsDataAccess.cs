@@ -13,8 +13,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         private readonly IConfiguration m_Configuration;
         private string connectionString;
 
-        public SensorReadingsDataAccess()
+        public SensorReadingsDataAccess(IConfiguration config)
         {
+            m_Configuration = config;
             connectionString = m_Configuration.GetConnectionString("LoraDB");
         }
 
