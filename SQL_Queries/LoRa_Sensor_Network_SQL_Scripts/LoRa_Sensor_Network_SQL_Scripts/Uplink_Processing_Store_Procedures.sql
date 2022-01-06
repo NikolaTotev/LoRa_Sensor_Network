@@ -32,7 +32,6 @@ end
 
 
 create procedure dbo.spStations_UpdateFieldStationLastSeen
-
  @lastSeen date
 as
 begin
