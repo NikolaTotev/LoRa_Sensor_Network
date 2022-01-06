@@ -19,22 +19,24 @@ create procedure dbo.spSignalData_AddEntrySignalData
 	@confirmed bit,
 	@bandID varchar(128),
 	@clusterID varchar(128),
-	@tennantID varchar(128),
+	@tenantID varchar(128),
 	@consumedAirtime varchar(128),
 	@gateway varchar(128)  
 as
 begin
 	insert into signalData 
-	(entryID, relatedSensorData, sessionKeyID,rssi, snr,spreadingFactor,confirmed,bandID,clusterID,tennantID, consumedAirtime, gateway) 
+	(entryID, relatedSensorData, sessionKeyID,rssi, snr,spreadingFactor,confirmed,bandID,clusterID,tenantID, consumedAirtime, gateway) 
 	values 
-	(@entryID,@relatedSensorData,@sessionKeyID,@rssi,@snr,@spreadingFactor,@confirmed,@bandID,@clusterID,@tennantID,@consumedAirtime,@gateway);
+	(@entryID,@relatedSensorData,@sessionKeyID,@rssi,@snr,@spreadingFactor,@confirmed,@bandID,@clusterID,@tenantID,@consumedAirtime,@gateway);
 end
 
 
 create procedure dbo.spStations_UpdateFieldStationLastSeen
- @lastSeen date
+ @lastSeen date,
+ @StationID varchar(255)
 as
 begin
 	update stations 
 	set lastSeen = @lastSeen
+	where stationID = @StationID
 end
