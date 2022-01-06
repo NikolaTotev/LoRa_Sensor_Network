@@ -4,18 +4,28 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
 {
     public class SensorReadingsDataAccess
     {
-        string conString = m_Configuration.GetConnectionString("LoraDB");
+        private readonly IConfiguration m_Configuration;
+        private string connectionString;
+
+        public SensorReadingsDataAccess()
+        {
+            connectionString = m_Configuration.GetConnectionString("LoraDB");
+        }
 
         //Gets all sensor readings in a time window from a station using the station ID;
         //The time Window is defined by start and end date. A single date can be chosen by setting startDate = endDate;
-        public void GetEntriesSensorReadingsByStationIDWindowed()
+        public List<string> GetEntriesSensorReadingsByStationIDWindowed()
         {
-            using(IDbConnection connection = new SqlConnection())
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+
+            }
         }
 
         //Gets all of the readings from all of the stations using a given window.
