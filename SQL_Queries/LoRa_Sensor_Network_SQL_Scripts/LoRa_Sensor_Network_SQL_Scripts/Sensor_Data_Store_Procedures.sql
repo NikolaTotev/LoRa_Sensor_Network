@@ -5,7 +5,7 @@ create procedure dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed
  @StationID varchar(255)
 as
 begin
-	select payload from sensordata where originID = @StationID AND  timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
+	select * from sensordata where originID = @StationID AND  timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
 end
 
 create procedure dbo.spSensorData_GetEntriesSensorReadingsWindowed
@@ -13,12 +13,12 @@ create procedure dbo.spSensorData_GetEntriesSensorReadingsWindowed
  @EndDate date
 as
 begin
-	select payload from sensordata where timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
+	select * from sensordata where timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
 end
 
 create procedure dbo.spSensorData_GetEntryLatestSensorReadingByStationID
  @StationID varchar(255)
 as
 begin
-	select top 1 payload from sensordata where originID = @StationID; 
+	select top 1 * from sensordata where originID = @StationID; 
 end
