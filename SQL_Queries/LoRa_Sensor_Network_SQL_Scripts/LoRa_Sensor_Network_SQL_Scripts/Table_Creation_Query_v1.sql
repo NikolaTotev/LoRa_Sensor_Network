@@ -11,10 +11,13 @@ supportedMeasurements text NOT NULL,
 dateCreated varchar(128) NOT NULL,
 );
 
+--ALTER TABLE sensordata
+--add timeOfCapture date not null;
+
 create table sensordata(
 readingID varchar(255) PRIMARY KEY,
 originID varchar(255) FOREIGN KEY REFERENCES stations(stationID),
-timeOfCapture varchar (128) NOT NULL,
+timeOfCapture date NOT NULL,
 payload text NOT NULL,
 );
 
