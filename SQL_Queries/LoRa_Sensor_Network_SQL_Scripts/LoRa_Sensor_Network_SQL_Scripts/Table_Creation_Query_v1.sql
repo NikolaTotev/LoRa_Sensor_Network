@@ -27,6 +27,8 @@ timeOfCapture date NOT NULL,
 payload text NOT NULL,
 );
 
+alter table signalData 
+add tenantID varchar(128) NOT NULL
 
 create table signalData(
 entryID varchar(255) PRIMARY KEY,
@@ -38,7 +40,7 @@ spreadingFactor int NOT NULL,
 confirmed bit NOT NULL,
 bandID varchar(128)  NOT NULL,
 clusterID varchar(128)  NOT NULL,
-tennantID varchar(128)  NOT NULL,
+tenantID varchar(128)  NOT NULL,
 consumedAirtime varchar(128)  NOT NULL,
 gateway varchar(128)  NOT NULL
 );
