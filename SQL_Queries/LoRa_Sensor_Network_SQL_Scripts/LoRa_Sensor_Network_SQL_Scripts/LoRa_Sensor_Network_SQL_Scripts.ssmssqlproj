@@ -31,11 +31,23 @@
           <AssociatedConnUserName />
           <FullPath>SQLQuery1.sql</FullPath>
         </FileNode>
+        <FileNode Name="Station_Data_Store_Procedures.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Station_Data_Store_Procedures.sql</FullPath>
+        </FileNode>
         <FileNode Name="Table_Creation_Query_v1.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Table_Creation_Query_v1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Uplink_Processing_Store_Procedures.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Uplink_Processing_Store_Procedures.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>
