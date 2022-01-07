@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.Data;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using Microsoft.Extensions.Configuration;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
@@ -14,21 +15,21 @@ using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
 {
-    [Microsoft.AspNetCore.Mvc.Route("ttnhooks/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("webhookhandlers/[controller]")]
     [ApiController]
     public class SensorUplinkHandlerController : ControllerBase
     {
-        private WeatherForecastService m_TempService;
-        public SensorUplinkHandlerController(WeatherForecastService service)
+        private UplinkDataService m_DataService;
+        public SensorUplinkHandlerController(UplinkDataService service)
         {
-            m_TempService = service;
+            m_DataService = service;
         }
 
         [HttpPost]
         public void ProcessUplink([FromBody] dynamic data)
         {
             LoRaUplink uplinkData = ToObject<LoRaUplink>(data);
-            int a = 0;
+            m_DataService.ProcessUplink(uplinkData);
         }
 
         public static T ToObject<T>(JsonElement element)
@@ -37,7 +38,5 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
             
         }
-
-        public string uplinkData;
     }
 }
