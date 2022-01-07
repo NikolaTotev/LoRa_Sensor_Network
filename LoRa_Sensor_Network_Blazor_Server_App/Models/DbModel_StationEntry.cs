@@ -19,5 +19,19 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Models
         public string supportedMeasurements;
         public string dateCreated;
         //DO NOT CHANGE PROPERTY NAMES!
+
+        public DbModel_StationEntry(string stationId, string joinEui, string devAddr, string stationName, double longitude, double latitude, int numberOfMessages, DateTime lastSeen, string supportedMeasurements, string dateCreated)
+        {
+            stationID = stationId;
+            joinEUI = joinEui;
+            this.devAddr = devAddr;
+            this.stationName = stationName;
+            this.longitude = longitude;
+            this.latitude = latitude;
+            this.numberOfMessages = numberOfMessages;
+            this.lastSeen = lastSeen;
+            this.supportedMeasurements = supportedMeasurements;
+            this.dateCreated = dateCreated;
+        }
     }
 }

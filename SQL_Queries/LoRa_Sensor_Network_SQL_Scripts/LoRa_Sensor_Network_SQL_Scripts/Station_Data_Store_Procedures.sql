@@ -4,6 +4,12 @@ begin
 	select stationID, stationName, latitude, longitude, lastSeen from stations;
 end
 
+create procedure dbo.spStations_GetEntriesListOfStationIDs
+as
+begin
+	select stationID from stations;
+end
+
 create procedure dbo.spStations_GetEntryAvailableMeasurementsByStationID
 	@stationID varchar(255)
 as

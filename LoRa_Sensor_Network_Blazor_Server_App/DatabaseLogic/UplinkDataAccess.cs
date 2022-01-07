@@ -22,18 +22,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             m_Configuration = config;
             connectionString = m_Configuration.GetConnectionString("LoraDB");
         }
-
-        //This function will just call 
-        //Add entry sensor reading
-        //Add entry signal data
-        //Update field station last seen 
-        //This function is here just for clarity.
-        public void ProcessUplink()
-        {
-
-        }
-
-
+        
         public void AddEntrySensorReading(DbModel_SensorReadingEntry entry)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -67,7 +56,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
                         confirmed = entry.confirmed,
                         bandID = entry.bandID,
                         clusterID = entry.clusterID,
-                        tenantID = entry.tennantID,
+                        tenantID = entry.tenantID,
                         consumedAirtime = entry.consumedAirtime,
                         gateway = entry.gateway
                     });

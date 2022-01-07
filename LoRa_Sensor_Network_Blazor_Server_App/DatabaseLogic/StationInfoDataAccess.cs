@@ -22,6 +22,16 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
 
         }
 
+
+        public void AddEntryNewStation(DbModel_StationEntry newEntry)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(
+                    "dbo.spStations_AddEntryNewStation @readingID, @originID, @payload, @timeOfCapture");
+            }
+        }
+
         //Get the list of available stations;
         public List<DbModel_BasicStationInfo> GetEntriesListOfStations()
         {
@@ -29,6 +39,15 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             {
                 return connection.Query<DbModel_BasicStationInfo>(
                     "dbo.spStations_GetEntriesListOfStations").ToList();
+            }
+        }
+
+        public List<string> GetEntriesListOfStationIDs()
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<string>(
+                    "dbo.spStations_GetEntriesListOfStationIDs").ToList();
             }
         }
 
