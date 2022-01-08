@@ -34,6 +34,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
             return tempSum / data.Count;
         }
 
+        //Generate an average value from the items in the list.
+        //The idea is for this function to be used with lists of doubles
+        //in string format. To void issues a TryParse functions is used;
         public double GenerateAvgFromList(List<string> data)
         {
             double tempSum = 0;
@@ -48,11 +51,14 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
             return tempSum / data.Count;
         }
 
+        //A wrapper for the JsonConvert DeserializeObject function. Makes code using the function more readable.
         public Dictionary<string, string> PayloadProcessor(string payloadInJsonStringFmt)
         {
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(payloadInJsonStringFmt);
         }
 
+        //From a list of sensor readings, extracts the encoded payload, converts it into a dictionary<string,string> and then extracts
+        //Values with the key given in the "value" parameter. 
         public List<string> ExtractListOfValuesFromListOfReading(List<DbModel_SensorReadingEntry> readings, string value)
         {
             List<string> result = new List<string>();
