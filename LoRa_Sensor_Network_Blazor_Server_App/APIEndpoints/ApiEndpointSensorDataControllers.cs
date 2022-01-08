@@ -17,6 +17,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
         private SensorReadingsDataAccess m_SensorReadingDbAccess;
         private StationInfoDataAccess m_StationInfoDbAccess;
         private DataProcessingService m_DataProcessing;
+
         public SensorReadingsController(SensorReadingsDataAccess db, StationInfoDataAccess stationDb)
         {
             m_SensorReadingDbAccess = db;
