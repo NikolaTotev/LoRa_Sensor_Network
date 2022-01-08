@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App
@@ -33,9 +34,10 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddTransient<UplinkDataAccess>();
-            services.AddTransient<SensorReadingsDataAccess>();
-            services.AddTransient<StationInfoDataAccess>();
+            services.AddSingleton<UplinkDataAccess>();
+            services.AddTransient<UplinkDataService>();
+            services.AddSingleton<SensorReadingsDataAccess>();
+            services.AddSingleton<StationInfoDataAccess>();
         }
 
 
