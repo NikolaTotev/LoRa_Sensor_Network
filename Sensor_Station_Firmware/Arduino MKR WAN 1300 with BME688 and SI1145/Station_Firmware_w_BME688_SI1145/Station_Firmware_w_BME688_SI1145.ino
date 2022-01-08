@@ -3,7 +3,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "arduino_secrets.h"
-#include <EEPROM.h>
 #include "bsec.h"
 
 LoRaModem modem;
@@ -30,8 +29,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Create an object of the class Bsec
 Bsec iaqSensor;
-uint8_t bsecState[BSEC_MAX_STATE_BLOB_SIZE] = {0};
-uint16_t stateUpdateCounter = 0;
+
+String output;
 
 
 int tempsensorAddress = 0x48; //here we tell the Arduino where the sensor can be found on the I2C bus
@@ -51,7 +50,7 @@ void setup() {
   delay(2000);
   
   setupModem();
-  setupBME()
+  setupBME();
 }
 
 void loop() 
@@ -110,7 +109,7 @@ void setupModem() {
     display.display();
     
     Serial.println("Something went wrong; are you indoor? Move near a window and retry");
-    while (1) {Serial.println("WARNING: Failed to start")}
+    while (1) {Serial.println("WARNING: Failed to start");}
   }
 
   resetDisplay();
@@ -131,16 +130,17 @@ void generateAndSendPacket() {
       float temperature = iaqSensor.temperature;
       float humidity = iaqSensor.humidity;
       output ="";
-      output += "," + String(iaqSensor.rawTemperature);
-      output += "," + String(iaqSensor.pressure);
-      output += "," + String(iaqSensor.rawHumidity);
-      output += "," + String(iaqSensor.gasResistance);
-      output += "," + String(iaqSensor.iaq);
-      output += "," + String(iaqSensor.iaqAccuracy);
-      output += "," + String(iaqSensor.temperature);
-      output += "," + String(iaqSensor.humidity);
-      Serial.println(output);
-      updateState();
+      output += "raw temp, " + String(iaqSensor.rawTemperature)+ "\n";
+      output += "pressure, " + String(iaqSensor.pressure)+ "\n";
+      output += "humidity, " + String(iaqSensor.rawHumidity)+ "\n";
+      output += "gas resistance, " + String(iaqSensor.gasResistance)+ "\n";
+      output += "iaq, " + String(iaqSensor.iaq)+ "\n";
+      output += "iaqAccuracy, " + String(iaqSensor.iaqAccuracy)+ "\n";
+      output += "temperature, " + String(iaqSensor.temperature)+ "\n";
+      output += "humidity, " + String(iaqSensor.humidity)+ "\n";
+      output += "staticIaq, " + String(iaqSensor.staticIaq)+ "\n";
+      output += "co2Equiv, " + String(iaqSensor.co2Equivalent)+ "\n";
+      output += "breathVocEuiv, " + String(iaqSensor.breathVocEquivalent)+ "\n";
     } else {
       checkIaqSensorStatus();
     }
@@ -158,11 +158,11 @@ void generateAndSendPacket() {
 
   int err;
   modem.beginPacket();
-  modem.print(temp);
+  modem.print("12.2");
   err = modem.endPacket(true);
   if (err > 0) {
     Serial.println("Message sent correctly!");
-    Serial.println(temp);
+    Serial.println("12.2");
   } else {
     Serial.println("Error sending message :(");
     //Serial.println("(you may send a limited amount of messages per minute, depending on the signal strength");
@@ -230,45 +230,40 @@ void testfillrect(void) {
 void resetDisplay (){
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.setTextSize(size);// Draw 2X-scale text
+  display.setTextSize(1);// Draw 2X-scale text
   display.setTextColor(SSD1306_WHITE);
 }
 
 void setupBME() {
-  EEPROM.begin(BSEC_MAX_STATE_BLOB_SIZE + 1); // 1st address for the length
-
-
   iaqSensor.begin(BME680_I2C_ADDR_PRIMARY, Wire);
   output = "\nBSEC library version " + String(iaqSensor.version.major) + "." + String(iaqSensor.version.minor) + "." + String(iaqSensor.version.major_bugfix) + "." + String(iaqSensor.version.minor_bugfix);
   Serial.println(output);
   checkIaqSensorStatus();
 
-  iaqSensor.setConfig(bsec_config_iaq);
-  checkIaqSensorStatus();
-
-  loadState();
-
-  bsec_virtual_sensor_t sensorList[7] = {
+  bsec_virtual_sensor_t sensorList[10] = {
     BSEC_OUTPUT_RAW_TEMPERATURE,
     BSEC_OUTPUT_RAW_PRESSURE,
     BSEC_OUTPUT_RAW_HUMIDITY,
     BSEC_OUTPUT_RAW_GAS,
     BSEC_OUTPUT_IAQ,
+    BSEC_OUTPUT_STATIC_IAQ,
+    BSEC_OUTPUT_CO2_EQUIVALENT,
+    BSEC_OUTPUT_BREATH_VOC_EQUIVALENT,
     BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
     BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
   };
 
-  iaqSensor.updateSubscription(sensorList, 7, BSEC_SAMPLE_RATE_LP);
+  iaqSensor.updateSubscription(sensorList, 10, BSEC_SAMPLE_RATE_LP);
   checkIaqSensorStatus();
 
   // Print the header
-  output = "Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ, IAQ accuracy, temperature [°C], relative humidity [%]";
+  output = "Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ, IAQ accuracy, temperature [°C], relative humidity [%], Static IAQ, CO2 equivalent, breath VOC equivalent";
   Serial.println(output);
-  
 }
 
 
 //BME Helper functions ===========================================
+// Helper function definitions
 void checkIaqSensorStatus(void)
 {
   if (iaqSensor.status != BSEC_OK) {
@@ -294,7 +289,6 @@ void checkIaqSensorStatus(void)
       Serial.println(output);
     }
   }
-  iaqSensor.status = BSEC_OK;
 }
 
 void errLeds(void)
@@ -305,60 +299,3 @@ void errLeds(void)
   digitalWrite(LED_BUILTIN, LOW);
   delay(100);
 }
-
-void loadState(void)
-{
-  if (EEPROM.read(0) == BSEC_MAX_STATE_BLOB_SIZE) {
-    // Existing state in EEPROM
-    Serial.println("Reading state from EEPROM");
-
-    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE; i++) {
-      bsecState[i] = EEPROM.read(i + 1);
-      Serial.println(bsecState[i], HEX);
-    }
-
-    iaqSensor.setState(bsecState);
-    checkIaqSensorStatus();
-  } else {
-    // Erase the EEPROM with zeroes
-    Serial.println("Erasing EEPROM");
-
-    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE + 1; i++)
-      EEPROM.write(i, 0);
-
-    EEPROM.commit();
-  }
-}
-
-void updateState(void)
-{
-  bool update = false;
-  /* Set a trigger to save the state. Here, the state is saved every STATE_SAVE_PERIOD with the first state being saved once the algorithm achieves full calibration, i.e. iaqAccuracy = 3 */
-  if (stateUpdateCounter == 0) {
-    if (iaqSensor.iaqAccuracy >= 3) {
-      update = true;
-      stateUpdateCounter++;
-    }
-  } else {
-    /* Update every STATE_SAVE_PERIOD milliseconds */
-    if ((stateUpdateCounter * STATE_SAVE_PERIOD) < millis()) {
-      update = true;
-      stateUpdateCounter++;
-    }
-  }
-
-  if (update) {
-    iaqSensor.getState(bsecState);
-    checkIaqSensorStatus();
-
-    Serial.println("Writing state to EEPROM");
-
-    for (uint8_t i = 0; i < BSEC_MAX_STATE_BLOB_SIZE ; i++) {
-      EEPROM.write(i + 1, bsecState[i]);
-      Serial.println(bsecState[i], HEX);
-    }
-
-    EEPROM.write(0, BSEC_MAX_STATE_BLOB_SIZE);
-    EEPROM.commit();
-  }
-} 
