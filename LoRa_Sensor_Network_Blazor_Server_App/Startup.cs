@@ -33,7 +33,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<UplinkDataAccess>();
+            services.AddTransient<UplinkDataAccess>();
+            services.AddTransient<SensorReadingsDataAccess>();
+            services.AddTransient<StationInfoDataAccess>();
         }
 
 
