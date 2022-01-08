@@ -11,7 +11,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Models
         public string readingID;
         public string originID;
         public DateTime timeOfCapture;
-        public string payload;
+        public string payload; //Dictionary<string,string>
         //DO NOT CHANGE PROPERTY NAMES!
 
         public DbModel_SensorReadingEntry(string readingId, string originId, DateTime timeOfCapture, string payload)
