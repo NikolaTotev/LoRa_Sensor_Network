@@ -42,8 +42,8 @@ void setup() {
   Wire.begin();
   while (!Serial);
   initDisplay();
-  resetDisplay();
   
+  resetDisplay();
   display.println("LoRa Station starting.");
   display.println("Firmware version v0.1");
   display.println("Mounted sensor BME688");
