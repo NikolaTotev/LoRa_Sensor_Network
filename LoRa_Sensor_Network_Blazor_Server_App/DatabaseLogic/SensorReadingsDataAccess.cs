@@ -55,7 +55,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         }
 
         //Gets only the latest readings from all of the stations;
-        public void GetEntriesLatestSensorReadingsAllStations(StationInfoDataAccess stationInfo)
+        public List<DbModel_SensorReadingEntry> GetEntriesLatestSensorReadingsAllStations(StationInfoDataAccess stationInfo)
         {
             List<DbModel_BasicStationInfo> ids = stationInfo.GetEntriesListOfStations();
 
@@ -65,6 +65,8 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             {
               latestData.Add(GetEntryLatestSensorReadingByStationID(station.stationID));   
             }
+
+            return latestData;
         }
 
 
