@@ -50,8 +50,14 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 var result = connection.Query<DbModel_SensorReadingEntry>(
-                    "dbo.spSensorData_GetEntryLatestSensorReadingByStationID @StationID", new { StationID = id }).ToList().First();
-                return result;
+                    "dbo.spSensorData_GetEntryLatestSensorReadingByStationID @StationID", new { StationID = id }).ToList();
+                if (result.Count > 0)
+                {
+                    return result.First();
+                }
+
+                return new DbModel_SensorReadingEntry("", "", DateTime.Now, "{}");
+
             }
         }
 
