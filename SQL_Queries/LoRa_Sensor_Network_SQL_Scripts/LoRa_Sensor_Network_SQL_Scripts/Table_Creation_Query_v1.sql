@@ -17,8 +17,8 @@ dateCreated varchar(128) NOT NULL,
 --alter table stations
 --add lastSeen date NOT NULL
 
-alter table sensordata
-add lineNum int NOT NULL IDENTITY(1,1);
+--alter table sensordata
+--add lineNum int NOT NULL IDENTITY(1,1);
 
 create table sensordata(
 readingID varchar(255) PRIMARY KEY,
@@ -27,8 +27,8 @@ timeOfCapture date NOT NULL,
 payload text NOT NULL,
 );
 
-alter table signalData 
-add tenantID varchar(128) NOT NULL
+--alter table signalData 
+--add tenantID varchar(128) NOT NULL
 
 create table signalData(
 entryID varchar(255) PRIMARY KEY,

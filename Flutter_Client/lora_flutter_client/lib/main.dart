@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:lora_flutter_client/frontend/stationspage.dart';
+import 'package:provider/provider.dart';
+import 'backend/SensorDataModel.dart';
 import 'frontend/homepage.dart';
 import 'package:flutter/services.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.blue[800], // navigation bar color
     statusBarColor: Colors.transparent, // status bar color
   ));
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SensorDataModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

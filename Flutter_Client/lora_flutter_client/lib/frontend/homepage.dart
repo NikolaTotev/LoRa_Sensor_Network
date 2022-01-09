@@ -1,4 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicLatestSensorReadings.dart';
+import 'package:lora_flutter_client/backend/SensorDataModel.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
   // This widget is the root of your application.
@@ -8,7 +13,7 @@ class Homepage extends StatelessWidget {
         body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text("Sofia", style: TextStyle(fontSize: 42)),
           Text("Last update:", style: TextStyle(fontSize: 16)),
           Text(" XX min ago", style: TextStyle(fontSize: 16)),
@@ -20,10 +25,21 @@ class Homepage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          Text(
-            "20C ",
-            style: TextStyle(fontSize: 124),
-            textAlign: TextAlign.center,
+          Consumer<SensorDataModel>(
+            builder: (context, dataMode, child) {
+              return FutureProvider<ApiModel_BasicLatestSensorReadings>(
+                  create: (context) => dataMode.getNewData(),
+                  initialData: ApiModel_BasicLatestSensorReadings(0),
+                  child: Consumer<ApiModel_BasicLatestSensorReadings>(
+                    builder: (context, loadedModel, child) {
+                      return Text(
+                        loadedModel.averageTemperature.toString(),
+                        style: TextStyle(fontSize: 124),
+                        textAlign: TextAlign.center,
+                      );
+                    },
+                  ));
+            },
           ),
           Text(
             "Avg. Humidity",
