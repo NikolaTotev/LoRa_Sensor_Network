@@ -28,8 +28,8 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 return connection.Query<DbModel_SensorReadingEntry>(
-                    "dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed @StartDate, @EndDate, @StationID", 
-                    new { StartDate = start, EndDate = end, StationId = id }).ToList();
+                    "dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed @StartDate, @EndDate, @StationID",
+                    new { StartDate = start.Date, EndDate=end.Date, StationID = id }).ToList();
             }
         }
 
@@ -40,7 +40,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 return connection.Query<DbModel_SensorReadingEntry>(
-                    "dbo.spSensorData_GetEntriesSensorReadingsWindowed @StartDate, @EndDate", new {StartDate = start, EndDate=end}).ToList();
+                    "dbo.spSensorData_GetEntriesSensorReadingsWindowed @StartDate, @EndDate", new { StartDate = start, EndDate = end }).ToList();
             }
         }
 
@@ -49,8 +49,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                return connection.Query<DbModel_SensorReadingEntry>(
-                    "dbo.spSensorData_GetEntryLatestSensorReadingByStationID @StationID", new {StationId = id}).First();
+                var result = connection.Query<DbModel_SensorReadingEntry>(
+                    "dbo.spSensorData_GetEntryLatestSensorReadingByStationID @StationID", new { StationID = id }).ToList().First();
+                return result;
             }
         }
 
@@ -61,9 +62,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
 
             List<DbModel_SensorReadingEntry> latestData = new List<DbModel_SensorReadingEntry>();
 
-            foreach (DbModel_BasicStationInfo station  in ids)
+            foreach (DbModel_BasicStationInfo station in ids)
             {
-              latestData.Add(GetEntryLatestSensorReadingByStationID(station.stationID));   
+                latestData.Add(GetEntryLatestSensorReadingByStationID(station.stationID));
             }
 
             return latestData;
