@@ -23,3 +23,6 @@ as
 begin
 	select * from stations where stationID=@stationID;
 end
+
+exec dbo.spStations_GetEntriesListOfStationIDs
+
