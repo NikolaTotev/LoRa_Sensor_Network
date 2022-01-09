@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:lora_flutter_client/backend/StationDataModel.dart';
+import 'package:provider/provider.dart';
 
 class StationsPage extends StatelessWidget {
   // This widget is the root of your application.
@@ -13,21 +17,30 @@ class StationsPage extends StatelessWidget {
         ),
         drawer: Drawer(
           child: Padding(
-            padding: EdgeInsets.zero,
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Text(
-                    'Other stations',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              padding: EdgeInsets.zero,
+              child: Consumer<StationDataModel>(
+                builder: (context, dataMode, child) {
+                  return FutureProvider<List<Widget>>(
+                      create: (context) => dataMode.transformRawStationListData(),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      initialData: [
+                        ListTile(
+                          title: Text("Loading..."),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left:100.0, right: 100.0),
+                          child: CircularProgressIndicator(),
+                        )
+                      ],
+                      child: Consumer<List<Widget>>(
+                        builder: (context, loadedModel, child) {
+                          return ListView(
+                            children: loadedModel,
+                          );
+                        },
+                      ));
+                },
+              )),
         ),
         body: Center(
           child: Column(

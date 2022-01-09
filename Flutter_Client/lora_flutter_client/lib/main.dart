@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lora_flutter_client/backend/StationDataModel.dart';
 import 'package:lora_flutter_client/frontend/stationspage.dart';
 import 'package:provider/provider.dart';
 import 'backend/SensorDataModel.dart';
@@ -9,12 +10,13 @@ import 'package:flutter/services.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.blue[800], // navigation bar color
-    statusBarColor: Colors.transparent, // status bar color
+    statusBarColor: Colors.blue[800], // status bar color
   ));
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => SensorDataModel()),
+        ChangeNotifierProvider(create: (context) => StationDataModel()),
       ],
       child: const MyApp(),
     ),
@@ -29,8 +31,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.light, // 2
+          ),
         ),
         home: MyStatefulWidget());
   }

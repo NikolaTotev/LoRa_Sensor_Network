@@ -14,11 +14,14 @@ class Homepage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Sofia", style: TextStyle(fontSize: 42)),
+          Padding(
+            padding: const EdgeInsets.only(top:42.0),
+            child: Text("Sofia", style: TextStyle(fontSize: 42)),
+          ),
           Text("Last update:", style: TextStyle(fontSize: 16)),
           Text(" XX min ago", style: TextStyle(fontSize: 16)),
           Padding(
-            padding: EdgeInsets.only(top: 150),
+            padding: EdgeInsets.only(top: 124),
             child: Text(
               "Avg. Temperature",
               style: TextStyle(fontSize: 25),
