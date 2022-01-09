@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bb5eca5-9c23-4176-ba37-9706c325cb52" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/homepage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/homepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/frontend/homepage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +26,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\Project Files\LoRa_Sensor_Network\Flutter_Client\lora_flutter_client\lib" />
+    </key>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -47,21 +45,21 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="0" height="0" key="GridCell.Tab.0.bottom" timestamp="1641735493701">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom" timestamp="1641752951372">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="0" height="0" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641735493701" />
-    <state width="0" height="0" key="GridCell.Tab.0.center" timestamp="1641735493700">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641752951372" />
+    <state width="1877" height="319" key="GridCell.Tab.0.center" timestamp="1641752951372">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="0" height="0" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641735493700" />
-    <state width="0" height="0" key="GridCell.Tab.0.left" timestamp="1641735493700">
+    <state width="1877" height="319" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641752951372" />
+    <state width="1877" height="319" key="GridCell.Tab.0.left" timestamp="1641752951371">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="0" height="0" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641735493700" />
-    <state width="0" height="0" key="GridCell.Tab.0.right" timestamp="1641735493701">
+    <state width="1877" height="319" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641752951371" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right" timestamp="1641752951372">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="0" height="0" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641735493701" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641752951372" />
   </component>
 </project>
