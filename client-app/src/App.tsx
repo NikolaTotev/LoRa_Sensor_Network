@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import * as signalR from "@microsoft/signalr";
 
 function App() {
   const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:44374/fetchdata")
-    .configureLogging(signalR.LogLevel.Information)  
+    .withUrl("https://localhost:44374/initTry", {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
+    })
+    .configureLogging(signalR.LogLevel.Information)
+    .withAutomaticReconnect()
     .build();
  
   // Starts the SignalR connection
@@ -43,26 +46,7 @@ function App() {
     return <p>{clientMessage}</p>
   };
  
- 
   return <><SignalRTime /><SignalRClient /></>;
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
 }
 
 export default App;

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
+using LoRa_Sensor_Network_Blazor_Server_App.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App
 {
@@ -28,17 +30,25 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            //services.AddRazorPages();
+            //services.AddServerSideBlazor();
+            //services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<UplinkDataAccess>();
+            services.AddSignalR();
+            services.AddCors(options =>
+                options.AddPolicy("CorsPolicy",
+                    builder =>
+                        builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials()));
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -55,12 +65,31 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
-                endpoints.MapControllers();
+                //endpoints.MapBlazorHub();
+                //endpoints.MapFallbackToPage("/_Host");
+                //endpoints.MapControllers();
+
+                endpoints.MapHub<InitHub>("/initTry");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+
+            hostApplicationLifetime.ApplicationStarted.Register(() =>
+            {
+                var serviceProvider = app.ApplicationServices;
+                var chatHub = (IHubContext<InitHub>)serviceProvider.GetService(typeof(IHubContext<InitHub>));
+
+                var timer = new System.Timers.Timer(1000);
+                timer.Enabled = true;
+                timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
+                    chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
+                };
+                timer.Start();
             });
         }
     }
