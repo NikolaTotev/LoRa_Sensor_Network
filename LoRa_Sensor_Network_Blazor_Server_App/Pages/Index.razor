@@ -1,7 +1,19 @@
 ﻿@page "/"
+@using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
+@inject UplinkDataAccess DBService
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        DBService.InsertSensorReading();
+    }
+}

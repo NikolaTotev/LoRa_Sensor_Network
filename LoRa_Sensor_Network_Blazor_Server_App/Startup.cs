@@ -32,7 +32,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
-            services.Configure<DbConnectionOptions>(Configuration.GetSection(nameof(DbConnectionOptions)));
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<UplinkDataAccess>();
         }
 
