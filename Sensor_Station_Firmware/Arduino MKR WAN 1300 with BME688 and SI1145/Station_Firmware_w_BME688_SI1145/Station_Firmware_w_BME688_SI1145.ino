@@ -31,23 +31,33 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 Bsec iaqSensor;
 
 String output;
+int numberOfMessages = 0;
 
 
 int tempsensorAddress = 0x48; //here we tell the Arduino where the sensor can be found on the I2C bus
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  Wire.begin();
-  while (!Serial);
   initDisplay();
-  
+
   resetDisplay();
   display.println("LoRa Station starting.");
   display.println("Firmware version v0.1");
   display.println("Mounted sensor BME688");
   display.display();
   delay(2000);
+
+  resetDisplay();
+  display.println("Starting serial.");
+  display.println("Baud Rate: 115200");
+  display.display();
+  delay(2000);
+  
+  Serial.begin(115200);
+  Wire.begin();
+  while (!Serial);
+  
+  
   
   setupModem();
   setupBME();
@@ -124,23 +134,25 @@ void setupModem() {
 }
 
 void generateAndSendPacket() {
-  float temperature = 0;
+  
+  float temperature = -1;
+  float humidity = -1;
   unsigned long time_trigger = millis();
     if (iaqSensor.run()) { // If new data is available
-      float temperature = iaqSensor.temperature;
-      float humidity = iaqSensor.humidity;
+      temperature = iaqSensor.temperature;
+      humidity = iaqSensor.humidity;
       output ="";
-      output += "raw temp, " + String(iaqSensor.rawTemperature)+ "\n";
-      output += "pressure, " + String(iaqSensor.pressure)+ "\n";
-      output += "humidity, " + String(iaqSensor.rawHumidity)+ "\n";
-      output += "gas resistance, " + String(iaqSensor.gasResistance)+ "\n";
-      output += "iaq, " + String(iaqSensor.iaq)+ "\n";
-      output += "iaqAccuracy, " + String(iaqSensor.iaqAccuracy)+ "\n";
-      output += "temperature, " + String(iaqSensor.temperature)+ "\n";
-      output += "humidity, " + String(iaqSensor.humidity)+ "\n";
-      output += "staticIaq, " + String(iaqSensor.staticIaq)+ "\n";
-      output += "co2Equiv, " + String(iaqSensor.co2Equivalent)+ "\n";
-      output += "breathVocEuiv, " + String(iaqSensor.breathVocEquivalent)+ "\n";
+      //output += String(iaqSensor.rawTemperature)+ " ";
+      output += String(iaqSensor.pressure)+ " ";
+      //output += String(iaqSensor.rawHumidity)+ " ";
+      //output += String(iaqSensor.gasResistance)+ " ";
+      output += String(iaqSensor.iaq)+ " ";
+      output += String(iaqSensor.iaqAccuracy)+ " ";
+      output += String(iaqSensor.temperature)+ " ";
+      output += String(iaqSensor.humidity)+ " ";
+      output += String(iaqSensor.staticIaq)+ " ";
+      output += String(iaqSensor.co2Equivalent)+ " ";
+      output += String(iaqSensor.breathVocEquivalent);
     } else {
       checkIaqSensorStatus();
     }
@@ -155,19 +167,43 @@ void generateAndSendPacket() {
   }
   Serial.println();
   */
-
+  Serial.println(output);
   int err;
   modem.beginPacket();
-  modem.print("12.2");
+  modem.print(output);
   err = modem.endPacket(true);
   if (err > 0) {
     Serial.println("Message sent correctly!");
-    Serial.println("12.2");
+    Serial.println(output);
+    resetDisplay();
+    display.println("Message sent!");
+    display.print("Message number:");
+    display.print(numberOfMessages);
+    display.display();
+    delay(2000);
+
+    resetDisplay();
+    display.println("Basic data:");
+    display.print("Temp:");
+    display.println(temperature);
+    display.print("Humid:");
+    display.println(humidity);
+    display.display();
+     delay(1000);
+    
   } else {
     Serial.println("Error sending message :(");
+    resetDisplay();
+    display.println("Failed to send message.");
+    display.print("Message number:");
+    display.print(numberOfMessages);
+    display.display();
+     delay(1000);
     //Serial.println("(you may send a limited amount of messages per minute, depending on the signal strength");
    //Serial.println("it may vary from 1 message every couple of seconds to 1 message every minute)");
   }
+
+  numberOfMessages++;
 }
 
 void checkForDownlink() 
