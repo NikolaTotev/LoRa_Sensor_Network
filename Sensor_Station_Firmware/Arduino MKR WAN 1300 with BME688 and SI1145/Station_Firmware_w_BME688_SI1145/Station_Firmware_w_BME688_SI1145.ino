@@ -62,17 +62,67 @@ void setup() {
   setupModem();
   setupBME();
 }
-
+bool sensorCalibrated = false;
 void loop() 
 {
-  generateAndSendPacket();
+
+  if(sensorCalibrated){  generateAndSendPacket();
   
   delay(1000);
   
   checkForDownlink();
   
   //Wait two minutes to send updated temp value.
-  delay(120000); 
+  delay(120000); }
+  else{
+    if (iaqSensor.run()) { // If new data is available
+    Serial.print("Temperature:");
+    Serial.print(iaqSensor.temperature);
+    Serial.print(",");
+    Serial.print("Humidity:");
+    Serial.print(iaqSensor.humidity);
+    Serial.print(",");
+    Serial.print("IAQAccuracy:");
+    Serial.print(iaqSensor.iaqAccuracy);
+    Serial.print(",");
+    Serial.print("IAQ:");
+    Serial.print(iaqSensor.iaq);
+    Serial.println();
+
+    resetDisplay();
+    display.println("Calib|Basic data:");
+    display.print("Temp:");
+    display.println(iaqSensor.temperature);
+    display.print("Humid:");
+    display.println(iaqSensor.humidity);
+    display.print("IAQ Accur:");
+    display.println(iaqSensor.iaqAccuracy);
+    display.display();
+     delay(1000);
+
+
+    if(iaqSensor.iaqAccuracy > 0){
+      sensorCalibrated = true;
+    }
+    /*
+    output = String(time_trigger)+ "/n";
+    output += "raw temp, " + String(iaqSensor.rawTemperature)+ "\n";
+    output += "pressure, " + String(iaqSensor.pressure)+ "\n";
+    output += "humidity, " + String(iaqSensor.rawHumidity)+ "\n";
+    output += "gas resistance, " + String(iaqSensor.gasResistance)+ "\n";
+    output += "iaq, " + String(iaqSensor.iaq)+ "\n";
+    output += "iaqAccuracy, " + String(iaqSensor.iaqAccuracy)+ "\n";
+    output += "temperature, " + String(iaqSensor.temperature)+ "\n";
+    output += "humidity, " + String(iaqSensor.humidity)+ "\n";
+    output += "staticIaq, " + String(iaqSensor.staticIaq)+ "\n";
+    output += "co2Equiv, " + String(iaqSensor.co2Equivalent)+ "\n";
+    output += "breathVocEuiv, " + String(iaqSensor.breathVocEquivalent)+ "\n";
+    Serial.println(output); */
+  } else {
+    checkIaqSensorStatus();
+  }
+  }
+
 }
 
 //this function deals with requesting data from the sensor and converting it to a readable format
