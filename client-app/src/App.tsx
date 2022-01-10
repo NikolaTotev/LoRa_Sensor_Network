@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import * as signalR from "@microsoft/signalr";
+import ButtonAppBar from './components/Header';
 
 function App() {
   const hubConnection = new signalR.HubConnectionBuilder()
@@ -46,7 +47,10 @@ function App() {
     return <p>{clientMessage}</p>
   };
  
-  return <><SignalRTime /><SignalRClient /></>;
+  return (<>
+    <ButtonAppBar />
+    <SignalRTime /><SignalRClient />
+  </>);
 }
 
 export default App;
