@@ -35,12 +35,12 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
 
             List<string> listOfTemperatures = m_DataProcessing.ExtractListOfValuesFromListOfReading(latestSensorReadings, "temperature");
 
-            List<string> listOfHumidities = m_DataProcessing.ExtractListOfValuesFromListOfReading(latestSensorReadings, "humid");
+            List<string> listOfHumidities = m_DataProcessing.ExtractListOfValuesFromListOfReading(latestSensorReadings, "humidity");
 
             double avgTemp = m_DataProcessing.GenerateAvgFromList(listOfTemperatures);
-            double avgHumidities = m_DataProcessing.GenerateAvgFromList(listOfHumidities);
+            double avgHumid = m_DataProcessing.GenerateAvgFromList(listOfHumidities);
 
-            ApiModel_BasicLatestSensorReadings data = new ApiModel_BasicLatestSensorReadings(avgTemp);
+            ApiModel_BasicLatestSensorReadings data = new ApiModel_BasicLatestSensorReadings(avgTemp, avgHumid);
          
             return data;
         }

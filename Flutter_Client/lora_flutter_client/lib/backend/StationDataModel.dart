@@ -64,13 +64,38 @@ class StationDataModel extends ChangeNotifier {
     }
   }
 
-  Future<List<String>> transformSupportedMeasurementList() async {
+  Future<ApiModel_BasicStationInfo> loadSelectedStationData() async {
     Future<bool> dataLoadedFlagFuture;
     bool dataLoaded = false;
     if (stationList.isEmpty) {
       dataLoadedFlagFuture = LoadStationList();
       dataLoaded = await dataLoadedFlagFuture;
     }
+    else{dataLoaded=true;}
+    if (dataLoaded) {
+      return selectedStation;
+    } else {
+      return ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]");
+    }
+  }
+
+  List<String> _transformSupportedMeasurements() {
+    List<String> result = [];
+    for (dynamic item in jsonDecode(selectedStation.supportedMeasurements)) {
+      result.add(item as String);
+    }
+
+    return result;
+  }
+
+  Future<List<String>> transformSupportedMeasurementList() async {
+    Future<bool> dataLoadedFlagFuture;
+    bool dataLoaded = false;
+    if (stationList.isEmpty) {
+      dataLoadedFlagFuture = LoadStationList();
+      dataLoaded = await dataLoadedFlagFuture;
+    }    else{dataLoaded=true;}
+
     if (dataLoaded) {
       List<String> result = [];
       for (dynamic item in jsonDecode(selectedStation.supportedMeasurements)) {

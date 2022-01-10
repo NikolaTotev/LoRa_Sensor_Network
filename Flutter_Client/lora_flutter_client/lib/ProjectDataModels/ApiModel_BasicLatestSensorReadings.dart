@@ -4,8 +4,10 @@ part 'ApiModel_BasicLatestSensorReadings.g.dart';
 @JsonSerializable()
 class ApiModel_BasicLatestSensorReadings{
 	late double averageTemperature;
+	late double averageHumidity;
+	late String lastUpdate;
 
-	ApiModel_BasicLatestSensorReadings(this.averageTemperature);
+	ApiModel_BasicLatestSensorReadings(this.averageTemperature,this.averageHumidity, this.lastUpdate);
 
 	/// A necessary factory constructor for creating a new User instance
 	/// from a map. Pass the map to the generated `_$UserFromJson()` constructor.
