@@ -25,7 +25,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
         {
             List<string> stations = m_StationInfoDataAccess.GetEntriesListOfStationIDs();
 
-            string uplinkOrigin = uplink.uplink_message.rx_metadata[0].gateway_ids.gateway_id;
+            string uplinkOrigin = uplink.end_device_ids.device_id;
 
             //Add the station of origin if the station isn't already added;
             if (!stations.Contains(uplinkOrigin))

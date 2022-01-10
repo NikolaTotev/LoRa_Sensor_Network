@@ -143,13 +143,13 @@ void generateAndSendPacket() {
       humidity = iaqSensor.humidity;
       output ="";
       //output += String(iaqSensor.rawTemperature)+ " ";
-      output += String(iaqSensor.pressure)+ " ";
       //output += String(iaqSensor.rawHumidity)+ " ";
       //output += String(iaqSensor.gasResistance)+ " ";
-      output += String(iaqSensor.iaq)+ " ";
-      output += String(iaqSensor.iaqAccuracy)+ " ";
       output += String(iaqSensor.temperature)+ " ";
       output += String(iaqSensor.humidity)+ " ";
+      output += String(iaqSensor.pressure)+ " ";
+      output += String(iaqSensor.iaq)+ " ";
+      output += String(iaqSensor.iaqAccuracy)+ " ";
       output += String(iaqSensor.staticIaq)+ " ";
       output += String(iaqSensor.co2Equivalent)+ " ";
       output += String(iaqSensor.breathVocEquivalent);

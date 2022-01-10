@@ -14,6 +14,7 @@ ApiModel_BasicStationInfo _$ApiModel_BasicStationInfoFromJson(
       (json['longitude'] as num).toDouble(),
       (json['latitude'] as num).toDouble(),
       DateTime.parse(json['lastSeen'] as String),
+      json['supportedMeasurements'] as String,
     );
 
 Map<String, dynamic> _$ApiModel_BasicStationInfoToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$ApiModel_BasicStationInfoToJson(
       'longitude': instance.longitude,
       'latitude': instance.latitude,
       'lastSeen': instance.lastSeen.toIso8601String(),
+      'supportedMeasurements': instance.supportedMeasurements,
     };

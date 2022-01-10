@@ -21,12 +21,34 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
         }
 
         [HttpGet]
-        public List<DbModel_BasicStationInfo> Get()
+        public List<DbModel_StationEntry> Get()
         {
-            List<DbModel_BasicStationInfo> listOfStations =
-                m_StationInfoDataAccess.GetEntriesListOfStations();
+            List<DbModel_StationEntry> listOfStations = m_StationInfoDataAccess.GetEntriesListOfStations();
 
             return listOfStations;
         }
     }
+
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GetStationMeasurementsController : ControllerBase
+    {
+        private StationInfoDataAccess m_StationInfoDataAccess;
+
+        public GetStationMeasurementsController(StationInfoDataAccess db)
+        {
+            m_StationInfoDataAccess = db;
+        }
+
+        [HttpGet]
+        public string Get(string stationID)
+        {
+            string listOfStations =
+                m_StationInfoDataAccess.GetEntryAvailableMeasurementsByStationID(stationID);
+
+            return listOfStations;
+        }
+    }
+
 }

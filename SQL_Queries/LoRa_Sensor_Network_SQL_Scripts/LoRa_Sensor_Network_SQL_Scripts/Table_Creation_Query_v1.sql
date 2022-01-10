@@ -10,7 +10,8 @@ lastSeen date NOT NULL,
 supportedMeasurements text NOT NULL,
 dateCreated varchar(128) NOT NULL,
 );
-
+--drop table sensordata;
+--drop table signaldata;
 --alter table stations
 --drop column lastSeen
 

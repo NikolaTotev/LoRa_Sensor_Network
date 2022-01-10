@@ -28,7 +28,7 @@ class StationsPage extends StatelessWidget {
                           title: Text("Loading..."),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left:100.0, right: 100.0),
+                          padding: const EdgeInsets.only(left: 100.0, right: 100.0),
                           child: CircularProgressIndicator(),
                         )
                       ],
@@ -82,40 +82,53 @@ class DropdownWidget extends StatefulWidget {
 }
 
 class _DropdownWidgetState extends State<DropdownWidget> {
-  String dropdownValue = 'Temperature';
+  String dropdownValue = 'Loading...';
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(
-        Icons.arrow_drop_down,
-        color: Colors.blueAccent,
-      ),
-      elevation: 16,
-      style: const TextStyle(color: Colors.blue),
-      underline: Container(
-        height: 2,
-        color: Colors.blue,
-      ),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-        });
+    return Consumer<StationDataModel>(
+      builder: (context, dataMode, child) {
+        return FutureProvider<List<String>>(
+            create: (context) => dataMode.transformSupportedMeasurementList(),
+            // ignore: prefer_const_literals_to_create_immutables
+            initialData: ["Loading..."],
+            child: Consumer<List<String>>(
+              builder: (context, loadedModel, child) {
+                dropdownValue = loadedModel[0];
+
+                return DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.blueAccent,
+                  ),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.blue),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.blue,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                    });
+                  },
+                  items: loadedModel.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0, top: 8, bottom: 8, right: 54),
+                        child: Text(
+                          value,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+            ));
       },
-      items: <String>['Temperature', 'Humidity', 'Pressure', 'Air quality']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, top: 8, bottom: 8, right: 54),
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        );
-      }).toList(),
     );
   }
 }

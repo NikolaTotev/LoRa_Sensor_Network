@@ -58,7 +58,7 @@ end
 create procedure dbo.spStations_GetEntriesListOfStations
 as
 begin
-	select stationID, stationName, latitude, longitude, lastSeen from stations;
+	select * from stations;
 end
 
 create procedure dbo.spStations_GetEntriesListOfStationIDs
@@ -132,5 +132,16 @@ values ('12a16cf-1c84-4772-8f15-2471b522741f8b', 'eui-a8610a3032306f09', '{"temp
 insert into stations (stationID, joinEUI, devAddr,stationName,longitude,latitude,numberOfMessages,lastSeen,supportedMeasurements,dateCreated)
 values ('eui-a8610a3032306f09', 'joinEUI', 'devAddr', 'stationName', 12, 21, 0, '2022-01-09', 'supportedMessages', '2022-01-09');
 
-select * from stations;
-select * from sensorData
+
+exec dbo.spSensorData_GetEntryLatestSensorReadingByStationID "eui-a8610a3032306f09"
+select * from sensordata
+
+delete from sensordata where readingID = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
+delete from signalData where relatedSensorData = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
+
+delete from sensordata where readingID = '1623a111-3469-49ab-8292-302a183cb432'
+delete from signalData where relatedSensorData = '1623a111-3469-49ab-8292-302a183cb432'
+
+select*from stations
+
+delete from sensordata where originID = 'eui-a8610a3032306f09'

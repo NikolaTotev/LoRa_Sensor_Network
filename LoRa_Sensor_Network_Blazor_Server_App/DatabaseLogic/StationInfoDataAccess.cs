@@ -46,12 +46,13 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         }
 
         //Get the list of available stations;
-        public List<DbModel_BasicStationInfo> GetEntriesListOfStations()
+        public List<DbModel_StationEntry> GetEntriesListOfStations()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                return connection.Query<DbModel_BasicStationInfo>(
+                var result = connection.Query<DbModel_StationEntry>(
                     "dbo.spStations_GetEntriesListOfStations").ToList();
+                return result;
             }
         }
 

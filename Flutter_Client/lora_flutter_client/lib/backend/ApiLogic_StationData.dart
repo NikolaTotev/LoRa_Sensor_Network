@@ -5,7 +5,7 @@ import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicStationInfo.
 
 class ApiLogic_StationData{
 
-	Future<List<dynamic>> fetchLatestBasicSensorData() async {
+	Future<List<dynamic>> fetchStationList() async {
 		final response = await http
 				.get(Uri.parse('https://nikolatotev-001-site1.ctempurl.com/api/GetStationList'));
 

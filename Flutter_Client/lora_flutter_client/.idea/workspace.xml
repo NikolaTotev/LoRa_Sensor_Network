@@ -3,7 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="3bb5eca5-9c23-4176-ba37-9706c325cb52" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ProjectDataModels/ApiModel_BasicStationInfo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ProjectDataModels/ApiModel_BasicStationInfo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ProjectDataModels/ApiModel_BasicStationInfo.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ProjectDataModels/ApiModel_BasicStationInfo.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/backend/ApiLogic_StationData.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/backend/ApiLogic_StationData.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/backend/StationDataModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/backend/StationDataModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/frontend/stationspage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/frontend/stationspage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/Models/LoRaUplink.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/Models/LoRaUplink.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/Services/UplinkDataService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/Services/UplinkDataService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/WebHookHandlers/SensorUplinkHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../LoRa_Sensor_Network_Blazor_Server_App/WebHookHandlers/SensorUplinkHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Table_Creation_Query_v1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Table_Creation_Query_v1.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Sensor_Station_Firmware/Arduino MKR WAN 1300 with BME688 and SI1145/Station_Firmware_w_BME688_SI1145/Station_Firmware_w_BME688_SI1145.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../../Sensor_Station_Firmware/Arduino MKR WAN 1300 with BME688 and SI1145/Station_Firmware_w_BME688_SI1145/Station_Firmware_w_BME688_SI1145.ino" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +65,22 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="711" y="382" key="#com.intellij.fileTypes.FileTypeChooser/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641766701276" />
-    <state width="1877" height="319" key="GridCell.Tab.0.bottom" timestamp="1641770966506">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom" timestamp="1641834630219">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641770966506" />
-    <state width="1877" height="319" key="GridCell.Tab.0.center" timestamp="1641770966505">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641834630219" />
+    <state width="1877" height="319" key="GridCell.Tab.0.center" timestamp="1641834630219">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641770966505" />
-    <state width="1877" height="319" key="GridCell.Tab.0.left" timestamp="1641770966505">
+    <state width="1877" height="319" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641834630219" />
+    <state width="1877" height="319" key="GridCell.Tab.0.left" timestamp="1641834630219">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641770966505" />
-    <state width="1877" height="319" key="GridCell.Tab.0.right" timestamp="1641770966505">
+    <state width="1877" height="319" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641834630219" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right" timestamp="1641834630219">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641770966505" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641834630219" />
     <state x="623" y="255" key="search.everywhere.popup" timestamp="1641757964796">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
