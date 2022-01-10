@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicStationInfo.dart';
@@ -9,50 +9,51 @@ class StationsPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return
-      Consumer<StationDataModel>(
-        builder: (context, dataMode, child) {
-          return FutureProvider<ApiModel_BasicStationInfo>(
-              create: (context) => dataMode.loadSelectedStationData(),
-              // ignore: prefer_const_literals_to_create_immutables
-              initialData:ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]"),
-              child: Consumer<ApiModel_BasicStationInfo>(
-                builder: (context, loadedModel, child) {
-                  return  Scaffold(
+    return Consumer<StationDataModel>(
+      builder: (context, dataMode, child) {
+        return FutureProvider<ApiModel_BasicStationInfo>(
+            create: (context) => dataMode.loadSelectedStationData(),
+            // ignore: prefer_const_literals_to_create_immutables
+            initialData:
+                ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]"),
+            child: Consumer<ApiModel_BasicStationInfo>(
+              builder: (context, loadedModel, child) {
+                return Scaffold(
+                    backgroundColor: Colors.white,
+                    appBar: AppBar(
                       backgroundColor: Colors.white,
-                      appBar: AppBar(
-                        backgroundColor: Colors.white,
-                        shadowColor: Colors.transparent,
-                        iconTheme: IconThemeData(color: Colors.blue, size: 30),
-                      ),
-                      drawer: Drawer(
-                        child: Padding(
-                            padding: EdgeInsets.zero,
-                            child: Consumer<StationDataModel>(
-                              builder: (context, dataMode, child) {
-                                return FutureProvider<List<Widget>>(
-                                    create: (context) => dataMode.transformRawStationListData(),
-                                    // ignore: prefer_const_literals_to_create_immutables
-                                    initialData: [
-                                      ListTile(
-                                        title: Text("Loading..."),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 100.0, right: 100.0),
-                                        child: CircularProgressIndicator(),
-                                      )
-                                    ],
-                                    child: Consumer<List<Widget>>(
-                                      builder: (context, loadedModel, child) {
-                                        return ListView(
-                                          children: loadedModel,
-                                        );
-                                      },
-                                    ));
-                              },
-                            )),
-                      ),
-                      body: Center(
+                      shadowColor: Colors.transparent,
+                      iconTheme: IconThemeData(color: Colors.blue, size: 30),
+                    ),
+                    drawer: Drawer(
+                      child: Padding(
+                          padding: EdgeInsets.zero,
+                          child: Consumer<StationDataModel>(
+                            builder: (context, dataMode, child) {
+                              return FutureProvider<List<Widget>>(
+                                  create: (context) => dataMode.transformRawStationListData(),
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  initialData: [
+                                    ListTile(
+                                      title: Text("Loading..."),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 100.0, right: 100.0),
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  ],
+                                  child: Consumer<List<Widget>>(
+                                    builder: (context, loadedModel, child) {
+                                      return ListView(
+                                        children: loadedModel,
+                                      );
+                                    },
+                                  ));
+                            },
+                          )),
+                    ),
+                    body: SingleChildScrollView(
+                      child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -78,18 +79,75 @@ class StationsPage extends StatelessWidget {
                               padding: EdgeInsets.only(top: 0.0),
                               child: DropdownWidget(),
                             ),
+                            DatePickers()
                           ],
                         ),
-                      ));
-                },
-              ));
-        },
-      );
+                      ),
+                    ));
+              },
+            ));
+      },
+    );
+  }
+}
 
+class DatePickers extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _DatePickersSatate();
+  }
+}
 
+class _DatePickersSatate extends State<DatePickers> {
+  DateTime selectedStartDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
 
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("${selectedStartDate.day}/${selectedStartDate.month}/${selectedStartDate.year}"),
+            TextButton(onPressed: () => pickDate(context, true), child: Text("Start Date"))
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}"),
+            TextButton(onPressed: () => pickDate(context, false), child: Text("End Date"))
+          ],
+        )
+      ],
+    );
+  }
 
+  Future pickDate(BuildContext context, bool pickingStartDate) async {
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+      initialEntryMode: DatePickerEntryMode.input,
+    );
 
+    if (selectedDate == null) {
+      return;
+    }
+
+    if (pickingStartDate) {
+      setState(() {
+        selectedStartDate = selectedDate;
+      });
+    } else {
+      setState(() {
+        selectedEndDate = selectedDate;
+      });
+    }
   }
 }
 
