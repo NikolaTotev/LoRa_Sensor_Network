@@ -92,6 +92,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "charts_common",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/charts_common-0.12.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "charts_flutter",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/charts_flutter-0.12.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "checked_yaml",
       "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/checked_yaml-2.0.1",
       "packageUri": "lib/",
@@ -230,6 +242,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "io",
       "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/io-1.0.3",
       "packageUri": "lib/",
@@ -327,25 +345,25 @@
     },
     {
       "name": "path_provider_linux",
-      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.4",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "path_provider_macos",
-      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.4",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "path_provider_platform_interface",
-      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.2",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "path_provider_windows",
-      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.4",
+      "rootUri": "file:///C:/Flutter%20SDK/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -518,7 +536,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-01-09T20:20:58.973400Z",
+  "generated": "2022-01-10T21:08:58.053489Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-80.1.beta"
 }

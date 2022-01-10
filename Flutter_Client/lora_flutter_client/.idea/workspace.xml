@@ -2,8 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bb5eca5-9c23-4176-ba37-9706c325cb52" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/backend/ChartLogic.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/frontend/TimelineSeriesChart.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/frontend/stationspage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/frontend/stationspage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Table_Creation_Query_v1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Table_Creation_Query_v1.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Sensor_Station_Firmware/Arduino MKR WAN 1300 with BME688 and SI1145/Station_Firmware_w_BME688_SI1145/Station_Firmware_w_BME688_SI1145.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../../Sensor_Station_Firmware/Arduino MKR WAN 1300 with BME688 and SI1145/Station_Firmware_w_BME688_SI1145/Station_Firmware_w_BME688_SI1145.ino" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +66,22 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="711" y="382" key="#com.intellij.fileTypes.FileTypeChooser/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641766701276" />
-    <state width="1877" height="319" key="GridCell.Tab.0.bottom" timestamp="1641846820076">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom" timestamp="1641854736938">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641846820076" />
-    <state width="1877" height="319" key="GridCell.Tab.0.center" timestamp="1641846820076">
+    <state width="1877" height="319" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641854736938" />
+    <state width="1877" height="319" key="GridCell.Tab.0.center" timestamp="1641854736938">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641846820076" />
-    <state width="1877" height="319" key="GridCell.Tab.0.left" timestamp="1641846820076">
+    <state width="1877" height="319" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641854736938" />
+    <state width="1877" height="319" key="GridCell.Tab.0.left" timestamp="1641854736938">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641846820076" />
-    <state width="1877" height="319" key="GridCell.Tab.0.right" timestamp="1641846820076">
+    <state width="1877" height="319" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641854736938" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right" timestamp="1641854736938">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="319" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641846820076" />
+    <state width="1877" height="319" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1641854736938" />
     <state x="623" y="255" key="search.everywhere.popup" timestamp="1641757964796">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

@@ -63,10 +63,11 @@ void setup() {
   setupBME();
 }
 bool sensorCalibrated = false;
+int calibrationTime = 0;
 void loop() 
 {
 
-  if(sensorCalibrated){  generateAndSendPacket();
+  if(sensorCalibrated && calibrationTime > 300){  generateAndSendPacket();
   
   delay(1000);
   
@@ -103,6 +104,7 @@ void loop()
 
     if(iaqSensor.iaqAccuracy > 0){
       sensorCalibrated = true;
+      calibrationTime++;
     }
     /*
     output = String(time_trigger)+ "/n";

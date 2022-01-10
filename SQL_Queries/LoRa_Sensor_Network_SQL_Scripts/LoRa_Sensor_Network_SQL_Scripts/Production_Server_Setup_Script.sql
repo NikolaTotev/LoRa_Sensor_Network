@@ -3,18 +3,18 @@ select * from sensordata
 select * from signalData
 
 -- UPLINK STORE PROCEDURES ====================================================================
-create procedure dbo.spSensorData_AddEntrySensorReading
+alter procedure dbo.spSensorData_AddEntrySensorReading
  @readingID varchar(255),
  @originID varchar(255),
  @payload text,
- @timeOfCapture date
+ @timeOfCapture datetime
 as
 begin
 	insert into sensordata (readingID,originID,payload,timeOfCapture) 
 	values (@readingID,@originID,@payload,@timeOfCapture);
 end
 
-create procedure dbo.spSignalData_AddEntrySignalData
+alter  procedure dbo.spSignalData_AddEntrySignalData
 	@entryID varchar(255),
 	@relatedSensorData varchar(255),
 	@sessionKeyID varchar(255),
@@ -35,7 +35,7 @@ begin
 	(@entryID,@relatedSensorData,@sessionKeyID,@rssi,@snr,@spreadingFactor,@confirmed,@bandID,@clusterID,@tenantID,@consumedAirtime,@gateway);
 end
 
-create procedure dbo.spStations_AddEntryNewStation
+alter procedure dbo.spStations_AddEntryNewStation
 	@stationID varchar(255),
 	@joinEUI varchar(255),
 	@devAddr varchar(128),
@@ -45,7 +45,7 @@ create procedure dbo.spStations_AddEntryNewStation
 	@numberOfMessages int,
 	@supportedMeasurements text,
 	@dateCreated varchar(128),
-	@lastSeen date
+	@lastSeen datetime
 as
 begin
 	insert into stations 
@@ -81,8 +81,8 @@ begin
 	select * from stations where stationID=@stationID;
 end
 
-create procedure dbo.spStations_UpdateFieldStationLastSeen
- @lastSeen date,
+alter procedure dbo.spStations_UpdateFieldStationLastSeen
+ @lastSeen datetime,
  @StationID varchar(255)
 as
 begin
@@ -95,18 +95,18 @@ exec dbo.spStations_GetEntriesListOfStationIDs
 
 
 -- SENSOR DATA STORE PROCEDURES ================================================================
-create procedure dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed
- @StartDate date,
- @EndDate date,
+alter procedure dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed
+ @StartDate datetime,
+ @EndDate datetime,
  @StationID varchar(255)
 as
 begin
 	select * from sensordata where originID = @StationID AND  timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
 end
 
-create procedure dbo.spSensorData_GetEntriesSensorReadingsWindowed
- @StartDate date,
- @EndDate date
+alter procedure dbo.spSensorData_GetEntriesSensorReadingsWindowed
+ @StartDate datetime,
+ @EndDate datetime
 as
 begin
 	select * from sensordata where timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
@@ -134,6 +134,7 @@ values ('eui-a8610a3032306f09', 'joinEUI', 'devAddr', 'stationName', 12, 21, 0, 
 
 
 exec dbo.spSensorData_GetEntryLatestSensorReadingByStationID "eui-a8610a3032306f09"
+
 select * from sensordata
 
 delete from sensordata where readingID = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'

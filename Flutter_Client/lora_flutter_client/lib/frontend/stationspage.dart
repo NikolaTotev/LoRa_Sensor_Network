@@ -4,9 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicStationInfo.dart';
 import 'package:lora_flutter_client/backend/StationDataModel.dart';
 import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+import 'TimelineSeriesChart.dart';
+
+/// Sample ordinal data type.
+/// Sample time series data type.
+class TimeSeriesSales {
+  final DateTime time;
+  final int sales;
+
+  TimeSeriesSales(this.time, this.sales);
+}
 
 class StationsPage extends StatelessWidget {
   // This widget is the root of your application.
+
+  /// Create one series with sample hard coded data.
+  /// Create one series with sample hard coded data.
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+    final data = [
+      new TimeSeriesSales(new DateTime(2017, 9, 19), 5),
+      new TimeSeriesSales(new DateTime(2017, 9, 26), 25),
+      new TimeSeriesSales(new DateTime(2017, 10, 3), 100),
+      new TimeSeriesSales(new DateTime(2017, 10, 10), 75),
+    ];
+
+    return [
+       charts.Series<TimeSeriesSales, DateTime>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (TimeSeriesSales sales, _) => sales.time,
+        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        data: data,
+      )
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StationDataModel>(
@@ -59,11 +93,12 @@ class StationsPage extends StatelessWidget {
                           children: [
                             Align(
                                 alignment: Alignment.topCenter,
-                                child: Text(loadedModel.stationName, style: TextStyle(fontSize: 42))),
+                                child:
+                                    Text(loadedModel.stationName, style: TextStyle(fontSize: 42))),
                             Text("Last seen:", style: TextStyle(fontSize: 16)),
                             Text(loadedModel.lastSeen.toString(), style: TextStyle(fontSize: 16)),
                             Padding(
-                              padding: EdgeInsets.only(top: 142),
+                              padding: EdgeInsets.only(top: 42),
                               child: Text(
                                 "Live Data",
                                 style: TextStyle(fontSize: 25),
@@ -79,7 +114,15 @@ class StationsPage extends StatelessWidget {
                               padding: EdgeInsets.only(top: 0.0),
                               child: DropdownWidget(),
                             ),
-                            DatePickers()
+                            DatePickers(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              height:  200,
+                              width:  350,
+                              child: SimpleTimeSeriesChart()
+                            ),
                           ],
                         ),
                       ),
@@ -107,21 +150,22 @@ class _DatePickersSatate extends State<DatePickers> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("${selectedStartDate.day}/${selectedStartDate.month}/${selectedStartDate.year}"),
-            TextButton(onPressed: () => pickDate(context, true), child: Text("Start Date"))
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}"),
+            TextButton(onPressed: () => pickDate(context, true), child: Text("Start Date")),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child:
+                  Text("${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}"),
+            ),
             TextButton(onPressed: () => pickDate(context, false), child: Text("End Date"))
           ],
-        )
+        ),
+        TextButton(onPressed: () {}, child: Text("Fetch data"))
       ],
     );
   }
