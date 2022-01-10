@@ -9,6 +9,7 @@ using LoRa_Sensor_Network_Blazor_Server_App.Data;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
 using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
@@ -29,6 +30,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
         public void ProcessUplink([FromBody] dynamic data)
         {
             LoRaUplink uplinkData = ToObject<LoRaUplink>(data);
+            string jsonString = data.ToString();
+            dynamic DeserData = JsonConvert.DeserializeObject(jsonString);
+            var uplinkMsk = DeserData.data.uplink_message;
             m_DataService.ProcessUplink(uplinkData);
         }
 
