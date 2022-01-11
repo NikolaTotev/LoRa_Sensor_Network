@@ -19,8 +19,8 @@ drop table stations;
 --alter table stations
 --add lastSeen date NOT NULL
 
---alter table sensordata
---add lineNum int NOT NULL IDENTITY(1,1);
+alter table sensordata
+add lineNum int NOT NULL IDENTITY(1,1);
 
 create table sensordata(
 readingID varchar(255) PRIMARY KEY,

@@ -101,7 +101,7 @@ alter procedure dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed
  @StationID varchar(255)
 as
 begin
-	select * from sensordata where originID = @StationID AND  CAST(timeOfCapture as date) >= @StartDate AND CAST(timeOfCapture as date) <= @EndDate
+	select * from sensordata where originID = @StationID AND  CAST(timeOfCapture as date) >= @StartDate AND CAST(timeOfCapture as date) <= @EndDate order by lineNum desc
 end
 
 exec dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed '2022-01-10', '2022-01-10', 'eui-a8610a3032306f09'
@@ -143,13 +143,29 @@ select * from sensordata order by lineNum
 delete from sensordata where readingID = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
 delete from signalData where relatedSensorData = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
 
-delete from sensordata where readingID = '1623a111-3469-49ab-8292-302a183cb432'
-delete from signalData where relatedSensorData = '1623a111-3469-49ab-8292-302a183cb432'
+delete from sensordata where readingID = 'eaf9500d-77da-4198-bee4-0a5fd83f12c7'
+delete from signalData where relatedSensorData = 'eaf9500d-77da-4198-bee4-0a5fd83f12c7'
 
+
+delete from sensordata where readingID = 'e1d2e57e-cdda-4c38-b7ae-9d19c594beeb'
+delete from signalData where relatedSensorData = 'e1d2e57e-cdda-4c38-b7ae-9d19c594beeb'
+
+
+delete from sensordata where readingID = '99af3c26-b751-4646-a16f-c8b7a11a875a'
+delete from signalData where relatedSensorData = '99af3c26-b751-4646-a16f-c8b7a11a875a'
+
+
+delete from sensordata where readingID = 'e1af6d2c-f16a-477b-bcfc-a1bd9b8528ea'
+delete from signalData where relatedSensorData = 'e1af6d2c-f16a-477b-bcfc-a1bd9b8528ea'
+eaf9500d-77da-4198-bee4-0a5fd83f12c7	eui-a8610a3032306f09	2022-01-11 11:50:30.970
+e1d2e57e-cdda-4c38-b7ae-9d19c594beeb	eui-a8610a3032306f09	2022-01-11 11:52:34.443
+99af3c26-b751-4646-a16f-c8b7a11a875a	eui-a8610a3032306f09	2022-01-11 11:54:38.870
+e1af6d2c-f16a-477b-bcfc-a1bd9b8528ea	eui-a8610a3032306f09	2022-01-11 11:56:43.473
 select*from stations
 
 delete from sensordata where originID = 'eui-a8610a3032306f09'
-
+delete from sensordata where originID = 'eui-a8610a3032306f09'
+select * from sensordata order by lineNum
 ;with tmp as (
 select *,
 table_seq = row_number() over (order by id),
