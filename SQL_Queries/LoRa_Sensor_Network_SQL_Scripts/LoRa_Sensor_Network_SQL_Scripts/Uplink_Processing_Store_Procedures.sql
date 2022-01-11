@@ -30,6 +30,26 @@ begin
 	(@entryID,@relatedSensorData,@sessionKeyID,@rssi,@snr,@spreadingFactor,@confirmed,@bandID,@clusterID,@tenantID,@consumedAirtime,@gateway);
 end
 
+create procedure dbo.spStations_AddEntryNewStation
+	@stationID varchar(255),
+	@joinEUI varchar(255),
+	@devAddr varchar(128),
+	@stationName varchar(255),
+	@longitude decimal,
+	@latitude decimal,
+	@numberOfMessages int,
+	@supportedMeasurements text,
+	@dateCreated varchar(128),
+	@lastSeen date
+as
+begin
+	insert into stations 
+	(stationID, joinEUI, devAddr, stationName, longitude, latitude, numberOfMessages, supportedMeasurements, dateCreated, lastSeen) 
+	values 
+	(@stationID, @joinEUI, @devAddr, @stationName, @longitude, @latitude, @numberOfMessages, @supportedMeasurements, @dateCreated, @lastSeen);
+end
+
+
 
 create procedure dbo.spStations_UpdateFieldStationLastSeen
  @lastSeen date,

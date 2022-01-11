@@ -2,18 +2,15 @@
 @using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
 @inject UplinkDataAccess DBService
 
-<h1>Hello, world!</h1>
+<h1>LoRa Sensor Network Server</h1>
+<h2>Server version: v0.0.1a</h2> <!--from a - d then + 1 -->
+<h2>Publish date 10.01.2022</h2>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
 
 
 
 @code {
 
-    protected override async Task OnInitializedAsync()
-    {
-        DBService.ProcessUplink();
-    }
 }

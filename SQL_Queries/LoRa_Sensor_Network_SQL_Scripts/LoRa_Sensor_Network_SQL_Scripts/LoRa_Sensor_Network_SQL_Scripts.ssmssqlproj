@@ -19,6 +19,12 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
+        <FileNode Name="Production_Server_Setup_Script.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Production_Server_Setup_Script.sql</FullPath>
+        </FileNode>
         <FileNode Name="Sensor_Data_Store_Procedures.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
@@ -32,8 +38,8 @@
           <FullPath>SQLQuery1.sql</FullPath>
         </FileNode>
         <FileNode Name="Station_Data_Store_Procedures.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Station_Data_Store_Procedures.sql</FullPath>
         </FileNode>
@@ -44,8 +50,8 @@
           <FullPath>Table_Creation_Query_v1.sql</FullPath>
         </FileNode>
         <FileNode Name="Uplink_Processing_Store_Procedures.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Uplink_Processing_Store_Procedures.sql</FullPath>
         </FileNode>

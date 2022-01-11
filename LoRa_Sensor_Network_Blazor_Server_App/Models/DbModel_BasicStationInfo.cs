@@ -8,11 +8,11 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Models
     public class DbModel_BasicStationInfo
     {
         //DO NOT CHANGE PROPERTY NAMES!
-        public string stationID;
-        public string stationName;
-        public double longitude;
-        public double latitude;
-        public DateTime lastSeen;
+        public string stationID { get; set; }
+        public string stationName { get; set; }
+        public double longitude { get; set; }
+        public double latitude { get; set; }
+        public DateTime lastSeen { get; set; }
         //DO NOT CHANGE PROPERTY NAMES!
     }
 }
