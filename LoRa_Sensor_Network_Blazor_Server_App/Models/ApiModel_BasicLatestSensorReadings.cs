@@ -11,11 +11,11 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Models
         public double averageHumidity { get; set; }
         public string lastUpdate { get; set; }
 
-        public ApiModel_BasicLatestSensorReadings(double avgTemp, double avgHumid)
+        public ApiModel_BasicLatestSensorReadings(double avgTemp, double avgHumid,DateTime date)
         {
             averageTemperature = avgTemp;
             averageHumidity = avgHumid;
-            lastUpdate = DateTime.Now.ToString();
+            lastUpdate = date.ToString();
         }
     }
 }

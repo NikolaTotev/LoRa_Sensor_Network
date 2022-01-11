@@ -11,6 +11,12 @@ using Newtonsoft.Json;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
 {
+
+    /// <summary>
+    /// route: /api/SensorReadings
+    /// return data: ApiModel_BasicLatestSensorReadings
+    /// use: Used to get the latest average temperature and humidity from the sensor network.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class SensorReadingsController : ControllerBase
@@ -18,12 +24,14 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
         private SensorReadingsDataAccess m_SensorReadingDbAccess;
         private StationInfoDataAccess m_StationInfoDbAccess;
         private DataProcessingService m_DataProcessing;
+        private DateService m_DateService;
 
-        public SensorReadingsController(SensorReadingsDataAccess db, StationInfoDataAccess stationDb, DataProcessingService dataProcessing)
+        public SensorReadingsController(SensorReadingsDataAccess db, StationInfoDataAccess stationDb, DataProcessingService dataProcessing, DateService dateService)
         {
             m_SensorReadingDbAccess = db;
             m_StationInfoDbAccess = stationDb;
             m_DataProcessing = dataProcessing;
+            m_DateService = dateService;
         }
 
         [HttpGet]
@@ -40,12 +48,19 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
             double avgTemp = m_DataProcessing.GenerateAvgFromList(listOfTemperatures);
             double avgHumid = m_DataProcessing.GenerateAvgFromList(listOfHumidities);
 
-            ApiModel_BasicLatestSensorReadings data = new ApiModel_BasicLatestSensorReadings(avgTemp, avgHumid);
+            ApiModel_BasicLatestSensorReadings data = new ApiModel_BasicLatestSensorReadings(avgTemp, avgHumid,m_DateService.GetUTCDate());
          
             return data;
         }
     }
 
+    /// <summary>
+    /// route: /api/StationSensorReadingsWindowed
+    /// parameters: string startDate, string endDate, string stationID
+    /// return data: List<DbModel_SensorReadingEntry>
+    /// use: Used to get a list of sensor readings from a specific station defined by stationID
+    /// that fall into the window defined by startDate and endDate.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class StationSensorReadingsWindowedController : ControllerBase
@@ -69,6 +84,12 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
         }
     }
 
+    /// <summary>
+    /// route: /api/StationSensorReadingsWindowed
+    /// parameters: string stationID
+    /// return data: DbModel_SensorReadingEntry
+    /// use: Used to get the latest sensor reading from a specific station defined by stationID.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GetLatestStationReadingsController : ControllerBase
