@@ -17,16 +17,16 @@ function App() {
   hubConnection.start().then(a => {
     // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
     if (hubConnection.connectionId) {
-      hubConnection.invoke("sendConnectionId", hubConnection.connectionId);
+      hubConnection.invoke("SendConnectionId", hubConnection.connectionId);
     }
   });  
  
   const SignalRTime: React.FC = () => {      
     // Sets the time from the server
     const [time, setTime] = useState<string | null>(null);
- 
+
     useEffect(() => {
-      hubConnection.on("setTime", message => {
+      hubConnection.on("SetTime", message => {
         setTime(message);
       });     
     });
@@ -39,7 +39,7 @@ function App() {
     const [clientMessage, setClientMessage] = useState<string | null>(null);
  
     useEffect(() => {
-      hubConnection.on("setClientMessage", message => {
+      hubConnection.on("SetClientMessage", message => {
         setClientMessage(message);
       });
     });

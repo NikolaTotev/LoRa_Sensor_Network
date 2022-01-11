@@ -87,7 +87,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
                 var timer = new System.Timers.Timer(1000);
                 timer.Enabled = true;
                 timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
-                    chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
+                    chatHub.Clients.All.SendAsync("SetTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
                 };
                 timer.Start();
             });
