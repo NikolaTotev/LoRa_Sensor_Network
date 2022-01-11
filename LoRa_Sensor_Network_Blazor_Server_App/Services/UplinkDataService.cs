@@ -58,7 +58,11 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
             string jsonifiedPayload =
                 JsonConvert.SerializeObject(uplink.uplink_message.decoded_payload, Formatting.Indented);
 
-            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, DateTime.Now, jsonifiedPayload);
+            DateTime timeUtc = DateTime.UtcNow;
+            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+            DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
+
+            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, cstTime, jsonifiedPayload);
            
             m_UplinkDataAcces.AddEntrySensorReading(newEntry);
 
@@ -78,6 +82,8 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
                 gateway: uplink.uplink_message.rx_metadata[0].gateway_ids.gateway_id);
 
             m_UplinkDataAcces.AddEntrySignalData(signalEntry);
+
+            m_UplinkDataAcces.UpdateFieldStationLastSeen(uplink.end_device_ids.device_id);
         }
     }
 }

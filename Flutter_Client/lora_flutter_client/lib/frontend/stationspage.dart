@@ -6,6 +6,7 @@ import 'package:lora_flutter_client/backend/StationDataModel.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
+import '../backend/SensorDataModel.dart';
 import 'TimelineSeriesChart.dart';
 
 /// Sample ordinal data type.
@@ -31,7 +32,7 @@ class StationsPage extends StatelessWidget {
     ];
 
     return [
-       charts.Series<TimeSeriesSales, DateTime>(
+      charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (TimeSeriesSales sales, _) => sales.time,
@@ -44,9 +45,9 @@ class StationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<StationDataModel>(
-      builder: (context, dataMode, child) {
+      builder: (context, dataModel, child) {
         return FutureProvider<ApiModel_BasicStationInfo>(
-            create: (context) => dataMode.loadSelectedStationData(),
+            create: (context) => dataModel.loadSelectedStationData(),
             // ignore: prefer_const_literals_to_create_immutables
             initialData:
                 ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]"),
@@ -119,10 +120,9 @@ class StationsPage extends StatelessWidget {
                               height: 20,
                             ),
                             Container(
-                              height:  200,
-                              width:  350,
-                              child: SimpleTimeSeriesChart()
-                            ),
+                                height: 200,
+                                width: 350,
+                                child: SimpleTimeSeriesChart(loadedModel.stationID)),
                           ],
                         ),
                       ),
@@ -165,7 +165,20 @@ class _DatePickersSatate extends State<DatePickers> {
             TextButton(onPressed: () => pickDate(context, false), child: Text("End Date"))
           ],
         ),
-        TextButton(onPressed: () {}, child: Text("Fetch data"))
+        TextButton(
+            onPressed: () {
+              Provider.of<StationDataModel>(context, listen: false)
+                  .updateDates(selectedStartDate, selectedEndDate);
+            },
+            child: Text("Fetch data")),
+        Consumer<StationDataModel>(
+          builder: (context, dataModel, child) {
+            return (dataModel.chartData.isEmpty) ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [Padding(
+              padding: const EdgeInsets.only(right:16.0),
+              child: Text("Loading..."),
+            ), Container(height: 20, width: 20, child: CircularProgressIndicator())],) : Container();
+          },
+        )
       ],
     );
   }
@@ -204,21 +217,21 @@ class DropdownWidget extends StatefulWidget {
 
 class _DropdownWidgetState extends State<DropdownWidget> {
   String dropdownValue = 'Loading...';
+  bool loaded = false;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<StationDataModel>(
-      builder: (context, dataMode, child) {
+      builder: (context, stationDataModel, child) {
         return FutureProvider<List<String>>(
-            create: (context) => dataMode.transformSupportedMeasurementList(),
+            create: (context) => stationDataModel.transformSupportedMeasurementList(),
             // ignore: prefer_const_literals_to_create_immutables
             initialData: ["Loading..."],
             child: Consumer<List<String>>(
               builder: (context, loadedModel, child) {
-                dropdownValue = loadedModel[0];
-
+                loaded = true;
                 return DropdownButton<String>(
-                  value: dropdownValue,
+                  value: stationDataModel.selectedMeasurement,
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.blueAccent,
@@ -232,6 +245,8 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                   onChanged: (String? newValue) {
                     setState(() {
                       dropdownValue = newValue!;
+                      debugPrint("VALUE: ${dropdownValue}");
+                      stationDataModel.updateSelectedMeasurement(dropdownValue);
                     });
                   },
                   items: loadedModel.map<DropdownMenuItem<String>>((String value) {

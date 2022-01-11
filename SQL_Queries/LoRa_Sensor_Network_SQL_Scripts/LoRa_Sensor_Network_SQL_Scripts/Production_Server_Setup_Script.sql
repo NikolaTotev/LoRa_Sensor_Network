@@ -96,13 +96,16 @@ exec dbo.spStations_GetEntriesListOfStationIDs
 
 -- SENSOR DATA STORE PROCEDURES ================================================================
 alter procedure dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed
- @StartDate datetime,
- @EndDate datetime,
+ @StartDate date,
+ @EndDate date,
  @StationID varchar(255)
 as
 begin
-	select * from sensordata where originID = @StationID AND  timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
+	select * from sensordata where originID = @StationID AND  CAST(timeOfCapture as date) >= @StartDate AND CAST(timeOfCapture as date) <= @EndDate
 end
+
+exec dbo.spSensorData_GetEntriesSensorReadingsByStationIDWindowed '2022-01-10', '2022-01-10', 'eui-a8610a3032306f09'
+select * from sensordata
 
 alter procedure dbo.spSensorData_GetEntriesSensorReadingsWindowed
  @StartDate datetime,
@@ -112,11 +115,11 @@ begin
 	select * from sensordata where timeOfCapture >= @StartDate AND timeOfCapture <= @EndDate
 end
 
-create procedure dbo.spSensorData_GetEntryLatestSensorReadingByStationID
+alter procedure dbo.spSensorData_GetEntryLatestSensorReadingByStationID
  @StationID varchar(255)
 as
 begin
-	select top 1 * from sensordata where originID = @StationID; 
+	select top 1 * from sensordata where originID = @StationID  order by lineNum desc; 
 end
 
 -- DUMMY DATA INSERT QUERIES
@@ -135,7 +138,7 @@ values ('eui-a8610a3032306f09', 'joinEUI', 'devAddr', 'stationName', 12, 21, 0, 
 
 exec dbo.spSensorData_GetEntryLatestSensorReadingByStationID "eui-a8610a3032306f09"
 
-select * from sensordata
+select * from sensordata order by lineNum
 
 delete from sensordata where readingID = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
 delete from signalData where relatedSensorData = 'e1e6f3f4-169f-4069-ae68-1c587a1c5135'
@@ -146,3 +149,18 @@ delete from signalData where relatedSensorData = '1623a111-3469-49ab-8292-302a18
 select*from stations
 
 delete from sensordata where originID = 'eui-a8610a3032306f09'
+
+;with tmp as (
+select *,
+table_seq = row_number() over (order by id),
+nice_seq = row_number() over (order by timeOfCapture, id)
+from sensordata
+)
+update t1
+set timeOfCapture = t2.timeOfCapture
+   ,readingID = t2.readingID,
+   originID = t2.originID,
+   payload = t2.payload
+   -- and any other columns in the table
+from tmp t1
+inner join tmp t2 on t1.table_seq=t2.nice_seq

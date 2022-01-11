@@ -5,15 +5,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicLatestSensorReadings.dart';
 import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicStationInfo.dart';
+import 'package:lora_flutter_client/ProjectDataModels/ApiModel_SensorReadingEntry.dart';
 import 'package:lora_flutter_client/backend/ApiLogic_SensorData.dart';
 import 'package:lora_flutter_client/backend/ApiLogic_StationData.dart';
 import 'dart:convert';
 
+import '../ProjectDataModels/ChartModel_TimeSeries.dart';
+
 class StationDataModel extends ChangeNotifier {
   ApiLogic_StationData _logic_stationData = ApiLogic_StationData();
+  ApiLogic_SensorData _logic_sensorData = ApiLogic_SensorData();
 
   late ApiModel_BasicStationInfo selectedStation;
   List<ApiModel_BasicStationInfo> stationList = [];
+  List<TimeSeries> chartData = [];
+  List<ApiModel_SensorReadingEntry> listOfEntries = [];
+  String selectedMeasurement= "Loading...";
+  DateTime selectedStartDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
 
   Future<List<dynamic>> getStationList() {
     return _logic_stationData.fetchStationList();
@@ -28,6 +37,15 @@ class StationDataModel extends ChangeNotifier {
     }
     selectedStation = stationList[0];
     return true;
+  }
+
+  Future<bool> LoadReadingsList(String stationID) async {
+    Future<List<ApiModel_SensorReadingEntry>> rawDataFuture =
+        _logic_sensorData.fetchWindowOfEntries(selectedStartDate, selectedEndDate, stationID);
+
+    listOfEntries = await rawDataFuture;
+
+    return listOfEntries.isNotEmpty;
   }
 
   Future<List<Widget>> transformRawStationListData() async {
@@ -70,8 +88,9 @@ class StationDataModel extends ChangeNotifier {
     if (stationList.isEmpty) {
       dataLoadedFlagFuture = LoadStationList();
       dataLoaded = await dataLoadedFlagFuture;
+    } else {
+      dataLoaded = true;
     }
-    else{dataLoaded=true;}
     if (dataLoaded) {
       return selectedStation;
     } else {
@@ -94,16 +113,58 @@ class StationDataModel extends ChangeNotifier {
     if (stationList.isEmpty) {
       dataLoadedFlagFuture = LoadStationList();
       dataLoaded = await dataLoadedFlagFuture;
-    }    else{dataLoaded=true;}
+    } else {
+      dataLoaded = true;
+    }
 
     if (dataLoaded) {
       List<String> result = [];
       for (dynamic item in jsonDecode(selectedStation.supportedMeasurements)) {
         result.add(item as String);
       }
+      selectedMeasurement = result[0];
+      reloadChart();
       return result;
     } else {
       return ["Failed to load."];
+    }
+  }
+
+  Future<List<TimeSeries>> generateChartData() async {
+    debugPrint("Generating chart data");
+    List<TimeSeries> result = [];
+
+    Future<bool> dataLoadedFlagFuture;
+    bool dataLoaded = false;
+
+    if (listOfEntries.isEmpty) {
+      dataLoadedFlagFuture = LoadReadingsList(selectedStation.stationID);
+      dataLoaded = await dataLoadedFlagFuture;
+    } else {
+      dataLoaded = true;
+    }
+
+    debugPrint("List of entries length: ${listOfEntries.length}");
+
+
+    if (dataLoaded) {
+      debugPrint("Data is loaded");
+      for (ApiModel_SensorReadingEntry entry in listOfEntries) {
+        Map<String, dynamic> payload = jsonDecode(entry.payload);
+        String? valueFromPayload = payload[selectedMeasurement];
+        TimeSeries chartValue;
+        if (valueFromPayload != null) {
+          debugPrint("Temp value: ${valueFromPayload}");
+          chartValue = TimeSeries(entry.timeOfCapture, double.parse(valueFromPayload));
+        } else {
+          chartValue = TimeSeries(entry.timeOfCapture, 1);
+        }
+
+        result.add(chartValue);
+      }
+      return result;
+    } else {
+      return [];
     }
   }
 
@@ -111,4 +172,29 @@ class StationDataModel extends ChangeNotifier {
     selectedStation = stationList[index];
     notifyListeners();
   }
+
+  void reloadChart() async {
+    Future<List<TimeSeries>> rawDataFuture;
+    rawDataFuture = generateChartData();
+    chartData = await rawDataFuture;
+    notifyListeners();
+
+  }
+
+  void updateSelectedMeasurement(String value) {
+    selectedMeasurement = value;
+    chartData = [];
+    reloadChart();
+    notifyListeners();
+  }
+
+  void updateDates (DateTime newStart, DateTime newEnd) {
+    selectedStartDate = newStart;
+    selectedEndDate = newEnd;
+    listOfEntries = [];
+    chartData = [];
+    reloadChart();
+    notifyListeners();
+  }
+
 }

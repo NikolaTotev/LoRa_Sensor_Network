@@ -67,11 +67,15 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
+                DateTime timeUtc = DateTime.UtcNow;
+                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+                DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
+
                 connection.Execute(
                     "dbo.spStations_UpdateFieldStationLastSeen @lastSeen, @StationID",
                     new
                     {
-                        readingID = DateTime.Now,
+                        lastSeen = cstTime,
                         StationID = id
                     });
             }
