@@ -6,29 +6,31 @@ stationName varchar(255) NOT NULL,
 longitude decimal NOT NULL,
 latitude decimal NOT NULL, 
 numberOfMessages int NOT NULL,
-lastSeen date NOT NULL,
+lastSeen datetime NOT NULL,
 supportedMeasurements text NOT NULL,
 dateCreated varchar(128) NOT NULL,
 );
-
+drop table sensordata;
+drop table signaldata;
+drop table stations;
 --alter table stations
 --drop column lastSeen
 
 --alter table stations
 --add lastSeen date NOT NULL
 
-alter table sensordata
-add lineNum int NOT NULL IDENTITY(1,1);
+--alter table sensordata
+--add lineNum int NOT NULL IDENTITY(1,1);
 
 create table sensordata(
 readingID varchar(255) PRIMARY KEY,
 originID varchar(255) FOREIGN KEY REFERENCES stations(stationID),
-timeOfCapture date NOT NULL,
+timeOfCapture datetime NOT NULL,
 payload text NOT NULL,
 );
 
-alter table signalData 
-add tenantID varchar(128) NOT NULL
+--alter table signalData 
+--add tenantID varchar(128) NOT NULL
 
 create table signalData(
 entryID varchar(255) PRIMARY KEY,

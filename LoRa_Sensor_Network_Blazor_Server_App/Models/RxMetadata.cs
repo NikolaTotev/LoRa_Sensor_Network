@@ -9,7 +9,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class RxMetadata
     {
-        [JsonProperty("gateway_id")]
+        [JsonProperty("gateway_ids")]
         public GatewayIDs gateway_ids { get; set; }
 
         [JsonProperty("time")]

@@ -13,19 +13,21 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
         private UplinkDataAccess m_UplinkDataAcces;
         private SensorReadingsDataAccess m_SensorReadingsDataAccess;
         private StationInfoDataAccess m_StationInfoDataAccess;
+        private DateService m_DateService;
 
-        public UplinkDataService(UplinkDataAccess uplinkDataAccess, SensorReadingsDataAccess sensorReadingsDataAccess, StationInfoDataAccess stationInfoDataAccess)
+        public UplinkDataService(UplinkDataAccess uplinkDataAccess, SensorReadingsDataAccess sensorReadingsDataAccess, StationInfoDataAccess stationInfoDataAccess, DateService dateService)
         {
             m_UplinkDataAcces = uplinkDataAccess;
             m_SensorReadingsDataAccess = sensorReadingsDataAccess;
             m_StationInfoDataAccess = stationInfoDataAccess;
+            m_DateService = dateService;
         }
 
         public void ProcessUplink(LoRaUplink uplink)
         {
             List<string> stations = m_StationInfoDataAccess.GetEntriesListOfStationIDs();
 
-            string uplinkOrigin = uplink.uplink_message.rx_metadata[0].gateway_ids.gateway_id;
+            string uplinkOrigin = uplink.end_device_ids.device_id;
 
             //Add the station of origin if the station isn't already added;
             if (!stations.Contains(uplinkOrigin))
@@ -58,7 +60,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
             string jsonifiedPayload =
                 JsonConvert.SerializeObject(uplink.uplink_message.decoded_payload, Formatting.Indented);
 
-            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, DateTime.Now, jsonifiedPayload);
+            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, m_DateService.GetUTCDate(), jsonifiedPayload);
            
             m_UplinkDataAcces.AddEntrySensorReading(newEntry);
 
@@ -78,6 +80,8 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
                 gateway: uplink.uplink_message.rx_metadata[0].gateway_ids.gateway_id);
 
             m_UplinkDataAcces.AddEntrySignalData(signalEntry);
+
+            m_UplinkDataAcces.UpdateFieldStationLastSeen(uplink.end_device_ids.device_id);
         }
     }
 }
