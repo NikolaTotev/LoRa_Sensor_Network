@@ -68,4 +68,26 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.APIEndpoints
             return sensorReadings;
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GetLatestStationReadingsController : ControllerBase
+    {
+        private SensorReadingsDataAccess m_SensorReadingDbAccess;
+
+        public GetLatestStationReadingsController(SensorReadingsDataAccess db)
+        {
+            m_SensorReadingDbAccess = db;
+        }
+
+        [HttpGet]
+        public DbModel_SensorReadingEntry Get(string stationID)
+        {
+         DbModel_SensorReadingEntry sensorReading =
+                m_SensorReadingDbAccess.GetEntryLatestSensorReadingByStationID(stationID);
+
+            return sensorReading;
+        }
+
+    }
 }

@@ -35,6 +35,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<UplinkDataAccess>();
+            services.AddSingleton<DateService>();
             services.AddTransient<UplinkDataService>();
             services.AddTransient<DataProcessingService>();
             services.AddSingleton<SensorReadingsDataAccess>();

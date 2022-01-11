@@ -106,11 +106,12 @@ class StationsPage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                             ),
+                            (dataModel.selectedStationLatestData.isNotEmpty)?
                             Text(
-                              "20C ",
+                              dataModel.selectedStationLatestData[dataModel.selectedMeasurement],
                               style: TextStyle(fontSize: 124),
                               textAlign: TextAlign.center,
-                            ),
+                            ):Container(height:50, width: 50, child: CircularProgressIndicator(),),
                             Padding(
                               padding: EdgeInsets.only(top: 0.0),
                               child: DropdownWidget(),
@@ -226,12 +227,12 @@ class _DropdownWidgetState extends State<DropdownWidget> {
         return FutureProvider<List<String>>(
             create: (context) => stationDataModel.transformSupportedMeasurementList(),
             // ignore: prefer_const_literals_to_create_immutables
-            initialData: ["Loading..."],
+            initialData: [],
             child: Consumer<List<String>>(
               builder: (context, loadedModel, child) {
                 loaded = true;
                 return DropdownButton<String>(
-                  value: stationDataModel.selectedMeasurement,
+                  value:(loaded) ? stationDataModel.selectedMeasurement : "",
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.blueAccent,

@@ -13,12 +13,14 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
         private UplinkDataAccess m_UplinkDataAcces;
         private SensorReadingsDataAccess m_SensorReadingsDataAccess;
         private StationInfoDataAccess m_StationInfoDataAccess;
+        private DateService m_DateService;
 
-        public UplinkDataService(UplinkDataAccess uplinkDataAccess, SensorReadingsDataAccess sensorReadingsDataAccess, StationInfoDataAccess stationInfoDataAccess)
+        public UplinkDataService(UplinkDataAccess uplinkDataAccess, SensorReadingsDataAccess sensorReadingsDataAccess, StationInfoDataAccess stationInfoDataAccess, DateService dateService)
         {
             m_UplinkDataAcces = uplinkDataAccess;
             m_SensorReadingsDataAccess = sensorReadingsDataAccess;
             m_StationInfoDataAccess = stationInfoDataAccess;
+            m_DateService = dateService;
         }
 
         public void ProcessUplink(LoRaUplink uplink)
@@ -58,11 +60,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
             string jsonifiedPayload =
                 JsonConvert.SerializeObject(uplink.uplink_message.decoded_payload, Formatting.Indented);
 
-            DateTime timeUtc = DateTime.UtcNow;
-            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
-            DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
-
-            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, cstTime, jsonifiedPayload);
+            DbModel_SensorReadingEntry newEntry = new DbModel_SensorReadingEntry(readingGUID.ToString(), uplink.end_device_ids.device_id, m_DateService.GetUTCDate(), jsonifiedPayload);
            
             m_UplinkDataAcces.AddEntrySensorReading(newEntry);
 

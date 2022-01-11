@@ -21,6 +21,26 @@ class ApiLogic_SensorData{
 		}
 	}
 
+	Future<ApiModel_SensorReadingEntry> fetchLatestBasicSensorDataFromStation(String stationID) async {
+		Map<String, String> queryParams = {
+			'stationID': stationID
+		};
+		String queryString = Uri(queryParameters: queryParams).query;
+
+		final response = await http
+				.get(Uri.parse('https://nikolatotev-001-site1.ctempurl.com/api/GetLatestStationReadings?${queryString}'));
+
+		if (response.statusCode == 200) {
+			// If the server did return a 200 OK response,
+			// then parse the JSON.
+			return ApiModel_SensorReadingEntry.fromJson(jsonDecode(response.body));
+		} else {
+			// If the server did not return a 200 OK response,
+			// then throw an exception.
+			throw Exception('Failed to load basic sensor readings.');
+		}
+	}
+
 	Future<List<ApiModel_SensorReadingEntry>> fetchWindowOfEntries(DateTime startDate, DateTime endDate, String stationID) async {
 		Map<String, String> queryParams = {
 			'startDate': startDate.toString(),

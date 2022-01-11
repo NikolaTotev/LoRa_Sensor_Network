@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
 using System.Data.SqlClient;
 using Dapper;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 using Microsoft.Extensions.Configuration;
 
@@ -16,11 +17,12 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
     {
         private readonly IConfiguration m_Configuration;
         private string connectionString;
-
-        public UplinkDataAccess(IConfiguration config)
+        private DateService m_DateService;
+        public UplinkDataAccess(IConfiguration config, DateService dateService)
         {
             m_Configuration = config;
             connectionString = m_Configuration.GetConnectionString("LoraDB");
+            m_DateService = dateService;
         }
         
         public void AddEntrySensorReading(DbModel_SensorReadingEntry entry)
@@ -67,15 +69,11 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                DateTime timeUtc = DateTime.UtcNow;
-                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
-                DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
-
                 connection.Execute(
                     "dbo.spStations_UpdateFieldStationLastSeen @lastSeen, @StationID",
                     new
                     {
-                        lastSeen = cstTime,
+                        lastSeen = m_DateService.GetUTCDate(),
                         StationID = id
                     });
             }

@@ -25,7 +25,13 @@ class Homepage extends StatelessWidget {
                         child: Text("Sofia", style: TextStyle(fontSize: 42)),
                       ),
                       Text("Last update:", style: TextStyle(fontSize: 16)),
-                      Text(loadedModel.lastUpdate, style: TextStyle(fontSize: 16)),
+                      (loadedModel.lastUpdate == "N/A")
+                          ? Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Container(
+                                  height: 42, width: 42, child: CircularProgressIndicator()),
+                            )
+                          : Text(loadedModel.lastUpdate, style: TextStyle(fontSize: 16)),
                       Padding(
                         padding: EdgeInsets.only(top: 124),
                         child: Text(
@@ -34,24 +40,36 @@ class Homepage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Text(
-                        loadedModel.averageTemperature.toString(),
-                        style: TextStyle(fontSize: 124),
-                        textAlign: TextAlign.center,
-                      ),
+                      (loadedModel.averageTemperature == 0)
+                          ? Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Container(
+                                  height: 50, width: 50, child: CircularProgressIndicator()),
+                            )
+                          : Text(
+                              loadedModel.averageTemperature.toString(),
+                              style: TextStyle(fontSize: 124),
+                              textAlign: TextAlign.center,
+                            ),
                       Text(
                         "Avg. Humidity",
                         style: TextStyle(fontSize: 25),
                         textAlign: TextAlign.center,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 50),
-                        child: Text(
-                          loadedModel.averageHumidity.toString(),
-                          style: TextStyle(fontSize: 124),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
+                      (loadedModel.averageTemperature == 0)
+                          ? Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Container(
+                                  height: 50, width: 50, child: CircularProgressIndicator()),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.only(bottom: 50),
+                              child: Text(
+                                loadedModel.averageHumidity.toString(),
+                                style: TextStyle(fontSize: 124),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
                     ],
                   );
                 },

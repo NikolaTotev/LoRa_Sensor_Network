@@ -17,6 +17,8 @@ class StationDataModel extends ChangeNotifier {
   ApiLogic_SensorData _logic_sensorData = ApiLogic_SensorData();
 
   late ApiModel_BasicStationInfo selectedStation;
+  late ApiModel_SensorReadingEntry selectedStationLatestSensorEntry;
+  Map<String, dynamic> selectedStationLatestData= {};
   List<ApiModel_BasicStationInfo> stationList = [];
   List<TimeSeries> chartData = [];
   List<ApiModel_SensorReadingEntry> listOfEntries = [];
@@ -36,6 +38,17 @@ class StationDataModel extends ChangeNotifier {
       stationList.add(stationInfo);
     }
     selectedStation = stationList[0];
+    LoadLatestStationData();
+    return true;
+  }
+
+  Future<bool> LoadLatestStationData()async{
+    Future<ApiModel_SensorReadingEntry> rawDataFuture = _logic_sensorData.fetchLatestBasicSensorDataFromStation(selectedStation.stationID);
+    ApiModel_SensorReadingEntry rawData = await rawDataFuture;
+
+    selectedStationLatestSensorEntry = rawData;
+    debugPrint("Payload${selectedStationLatestSensorEntry.payload}");
+    selectedStationLatestData = jsonDecode(selectedStationLatestSensorEntry.payload);
     return true;
   }
 
@@ -154,7 +167,7 @@ class StationDataModel extends ChangeNotifier {
         String? valueFromPayload = payload[selectedMeasurement];
         TimeSeries chartValue;
         if (valueFromPayload != null) {
-          debugPrint("Temp value: ${valueFromPayload}");
+          debugPrint("Temp value: ${valueFromPayload} datetime ${entry.timeOfCapture}");
           chartValue = TimeSeries(entry.timeOfCapture, double.parse(valueFromPayload));
         } else {
           chartValue = TimeSeries(entry.timeOfCapture, 1);
