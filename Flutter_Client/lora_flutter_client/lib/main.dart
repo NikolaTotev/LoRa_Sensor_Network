@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lora_flutter_client/backend/StationDataModel.dart';
 import 'package:lora_flutter_client/frontend/stationspage.dart';
 import 'package:provider/provider.dart';
@@ -83,8 +84,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'History',
           ),
         ],
+        selectedLabelStyle: GoogleFonts.kanit(
+          fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.w800),
+        unselectedLabelStyle:  GoogleFonts.kanit(
+            fontSize: 14, color: Colors.blue[500], fontWeight: FontWeight.w400),
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[800],
+        selectedItemColor: Colors.blue[900],
+        unselectedItemColor: Colors.blue[400],
         onTap: _onItemTapped,
       ),
     );
