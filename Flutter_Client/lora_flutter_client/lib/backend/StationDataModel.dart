@@ -18,11 +18,11 @@ class StationDataModel extends ChangeNotifier {
 
   late ApiModel_BasicStationInfo selectedStation;
   late ApiModel_SensorReadingEntry selectedStationLatestSensorEntry;
-  Map<String, dynamic> selectedStationLatestData= {};
+  Map<String, dynamic> selectedStationLatestData = {};
   List<ApiModel_BasicStationInfo> stationList = [];
   List<TimeSeries> chartData = [];
   List<ApiModel_SensorReadingEntry> listOfEntries = [];
-  String selectedMeasurement= "Loading...";
+  String selectedMeasurement = "Loading...";
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
 
@@ -42,12 +42,12 @@ class StationDataModel extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> LoadLatestStationData()async{
-    Future<ApiModel_SensorReadingEntry> rawDataFuture = _logic_sensorData.fetchLatestBasicSensorDataFromStation(selectedStation.stationID);
+  Future<bool> LoadLatestStationData() async {
+    Future<ApiModel_SensorReadingEntry> rawDataFuture =
+        _logic_sensorData.fetchLatestBasicSensorDataFromStation(selectedStation.stationID);
     ApiModel_SensorReadingEntry rawData = await rawDataFuture;
 
     selectedStationLatestSensorEntry = rawData;
-    debugPrint("Payload${selectedStationLatestSensorEntry.payload}");
     selectedStationLatestData = jsonDecode(selectedStationLatestSensorEntry.payload);
     return true;
   }
@@ -144,7 +144,6 @@ class StationDataModel extends ChangeNotifier {
   }
 
   Future<List<TimeSeries>> generateChartData() async {
-    debugPrint("Generating chart data");
     List<TimeSeries> result = [];
 
     Future<bool> dataLoadedFlagFuture;
@@ -157,17 +156,12 @@ class StationDataModel extends ChangeNotifier {
       dataLoaded = true;
     }
 
-    debugPrint("List of entries length: ${listOfEntries.length}");
-
-
     if (dataLoaded) {
-      debugPrint("Data is loaded");
       for (ApiModel_SensorReadingEntry entry in listOfEntries) {
         Map<String, dynamic> payload = jsonDecode(entry.payload);
         String? valueFromPayload = payload[selectedMeasurement];
         TimeSeries chartValue;
         if (valueFromPayload != null) {
-          debugPrint("Temp value: ${valueFromPayload} datetime ${entry.timeOfCapture}");
           chartValue = TimeSeries(entry.timeOfCapture, double.parse(valueFromPayload));
         } else {
           chartValue = TimeSeries(entry.timeOfCapture, 1);
@@ -191,7 +185,6 @@ class StationDataModel extends ChangeNotifier {
     rawDataFuture = generateChartData();
     chartData = await rawDataFuture;
     notifyListeners();
-
   }
 
   void updateSelectedMeasurement(String value) {
@@ -201,7 +194,7 @@ class StationDataModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateDates (DateTime newStart, DateTime newEnd) {
+  void updateDates(DateTime newStart, DateTime newEnd) {
     selectedStartDate = newStart;
     selectedEndDate = newEnd;
     listOfEntries = [];
@@ -209,5 +202,4 @@ class StationDataModel extends ChangeNotifier {
     reloadChart();
     notifyListeners();
   }
-
 }
