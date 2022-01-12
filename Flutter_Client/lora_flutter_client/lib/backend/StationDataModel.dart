@@ -36,6 +36,7 @@ class StationDataModel extends ChangeNotifier {
     for (dynamic entry in rawData) {
       ApiModel_BasicStationInfo stationInfo = ApiModel_BasicStationInfo.fromJson(entry);
       stationList.add(stationInfo);
+      debugPrint("Adding station ${stationInfo.stationName}");
     }
     selectedStation = stationList[0];
     LoadLatestStationData();

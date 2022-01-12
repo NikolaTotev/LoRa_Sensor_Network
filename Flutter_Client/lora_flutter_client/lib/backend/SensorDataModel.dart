@@ -26,8 +26,6 @@ class SensorDataModel extends ChangeNotifier {
 	}
 
 	void refresh() {
-		loaded = false;
-		notifyListeners();
 		updateData();
 	}
 }

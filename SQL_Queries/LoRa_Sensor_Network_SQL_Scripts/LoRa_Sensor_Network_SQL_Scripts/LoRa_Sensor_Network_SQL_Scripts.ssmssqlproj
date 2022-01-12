@@ -15,14 +15,26 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
+        <ConnectionNode Name="sql5080.site4now.net:db_a788b8_lorasensornetwork_admin">
+          <Created>2022-01-09T23:06:30.7448127+02:00</Created>
+          <Type>SQL</Type>
+          <Server>sql5080.site4now.net</Server>
+          <UserName>db_a788b8_lorasensornetwork_admin</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
         <FileNode Name="Production_Server_Setup_Script.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:sql5080.site4now.net:False:db_a788b8_lorasensornetwork_admin</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>sql5080.site4now.net</AssociatedConnSrvName>
+          <AssociatedConnUserName>db_a788b8_lorasensornetwork_admin</AssociatedConnUserName>
           <FullPath>Production_Server_Setup_Script.sql</FullPath>
         </FileNode>
         <FileNode Name="Sensor_Data_Store_Procedures.sql">
@@ -44,9 +56,9 @@
           <FullPath>Station_Data_Store_Procedures.sql</FullPath>
         </FileNode>
         <FileNode Name="Table_Creation_Query_v1.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:COMP-MCCOMPFACE:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>COMP-MCCOMPFACE</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:sql5080.site4now.net:False:db_a788b8_lorasensornetwork_admin</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>sql5080.site4now.net</AssociatedConnSrvName>
+          <AssociatedConnUserName>db_a788b8_lorasensornetwork_admin</AssociatedConnUserName>
           <FullPath>Table_Creation_Query_v1.sql</FullPath>
         </FileNode>
         <FileNode Name="Uplink_Processing_Store_Procedures.sql">
