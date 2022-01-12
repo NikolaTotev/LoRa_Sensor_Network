@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lora_flutter_client/ProjectDataModels/ApiModel_BasicStationInfo.dart';
 import 'package:lora_flutter_client/backend/StationDataModel.dart';
+import 'package:lora_flutter_client/utilityclasses/string_capitalization.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -50,7 +52,7 @@ class StationsPage extends StatelessWidget {
             create: (context) => dataModel.loadSelectedStationData(),
             // ignore: prefer_const_literals_to_create_immutables
             initialData:
-                ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]"),
+                ApiModel_BasicStationInfo("", "Loading...", 0, 0, DateTime.now(), "[]"),
             child: Consumer<ApiModel_BasicStationInfo>(
               builder: (context, loadedModel, child) {
                 return Scaffold(
@@ -70,7 +72,14 @@ class StationsPage extends StatelessWidget {
                                   // ignore: prefer_const_literals_to_create_immutables
                                   initialData: [
                                     ListTile(
-                                      title: Text("Loading..."),
+                                      title: Text(
+                                        "Loading...",
+                                        style: GoogleFonts.kanit(
+                                          fontSize: 18,
+                                          color: Colors.blue[900],
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 100.0, right: 100.0),
@@ -94,24 +103,55 @@ class StationsPage extends StatelessWidget {
                           children: [
                             Align(
                                 alignment: Alignment.topCenter,
-                                child:
-                                    Text(loadedModel.stationName, style: TextStyle(fontSize: 42))),
-                            Text("Last seen:", style: TextStyle(fontSize: 16)),
-                            Text(loadedModel.lastSeen.toString(), style: TextStyle(fontSize: 16)),
+                                child: Text(
+                                  loadedModel.stationName,
+                                  style: GoogleFonts.kanit(
+                                      fontSize: 60,
+                                      color: Colors.blue[700],
+                                      fontWeight: FontWeight.w700),
+                                )),
+                            Text(
+                              "Last update:",
+                              style: GoogleFonts.kanit(
+                                fontSize: 18,
+                                color: Colors.blue[900],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              loadedModel.lastSeen.toString(),
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                color: Colors.blue[900],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                             Padding(
                               padding: EdgeInsets.only(top: 42),
                               child: Text(
                                 "Live Data",
-                                style: TextStyle(fontSize: 25),
+                                style: GoogleFonts.kanit(
+                                    fontSize: 25,
+                                    color: Colors.blue[900],
+                                    fontWeight: FontWeight.w600),
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            (dataModel.selectedStationLatestData.isNotEmpty)?
-                            Text(
-                              dataModel.selectedStationLatestData[dataModel.selectedMeasurement],
-                              style: TextStyle(fontSize: 124),
-                              textAlign: TextAlign.center,
-                            ):Container(height:50, width: 50, child: CircularProgressIndicator(),),
+                            (dataModel.selectedStationLatestData.isNotEmpty)
+                                ? Text(
+                                    dataModel
+                                        .selectedStationLatestData[dataModel.selectedMeasurement],
+                                    style: GoogleFonts.kanit(
+                                        fontSize: 100,
+                                        color: Colors.blue[700],
+                                        fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: CircularProgressIndicator(),
+                                  ),
                             Padding(
                               padding: EdgeInsets.only(top: 0.0),
                               child: DropdownWidget(),
@@ -120,10 +160,13 @@ class StationsPage extends StatelessWidget {
                             SizedBox(
                               height: 20,
                             ),
-                            Container(
-                                height: 200,
-                                width: 350,
-                                child: SimpleTimeSeriesChart(loadedModel.stationID)),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              child: Container(
+                                  height: 200,
+                                  width: 350,
+                                  child: SimpleTimeSeriesChart(loadedModel.stationID)),
+                            ),
                           ],
                         ),
                       ),
@@ -153,31 +196,82 @@ class _DatePickersSatate extends State<DatePickers> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Row(
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("${selectedStartDate.day}/${selectedStartDate.month}/${selectedStartDate.year}"),
-            TextButton(onPressed: () => pickDate(context, true), child: Text("Start Date")),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child:
-                  Text("${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "${selectedStartDate.day}/${selectedStartDate.month}/${selectedStartDate.year}",
+                  style: GoogleFonts.kanit(
+                    fontSize: 18,
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () => pickDate(context, true),
+                    child: Text("Start Date",
+                        style: GoogleFonts.kanit(
+                            fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.w400)),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlue[50], shadowColor: Colors.blue[700])),
+              ],
             ),
-            TextButton(onPressed: () => pickDate(context, false), child: Text("End Date"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}",
+                  style: GoogleFonts.kanit(
+                    fontSize: 18,
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () => pickDate(context, false),
+                    child: Text("End Date",
+                        style: GoogleFonts.kanit(
+                            fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.w400)),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlue[50], shadowColor: Colors.blue[700]))
+              ],
+            )
           ],
         ),
-        TextButton(
+        ElevatedButton(
             onPressed: () {
               Provider.of<StationDataModel>(context, listen: false)
                   .updateDates(selectedStartDate, selectedEndDate);
             },
-            child: Text("Fetch data")),
+            child: Text("Fetch data",
+                style: GoogleFonts.kanit(
+                    fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.w400)),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlue[50], shadowColor: Colors.blue[700])),
         Consumer<StationDataModel>(
           builder: (context, dataModel, child) {
-            return (dataModel.chartData.isEmpty) ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [Padding(
-              padding: const EdgeInsets.only(right:16.0),
-              child: Text("Loading..."),
-            ), Container(height: 20, width: 20, child: CircularProgressIndicator())],) : Container();
+            return (dataModel.chartData.isEmpty)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Text(
+                          "Loading...",
+                          style: GoogleFonts.kanit(
+                            fontSize: 18,
+                            color: Colors.blue[900],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Container(height: 20, width: 20, child: CircularProgressIndicator())
+                    ],
+                  )
+                : Container();
           },
         )
       ],
@@ -231,8 +325,8 @@ class _DropdownWidgetState extends State<DropdownWidget> {
             child: Consumer<List<String>>(
               builder: (context, loadedModel, child) {
                 loaded = true;
-                return DropdownButton<String>(
-                  value:(loaded) ? stationDataModel.selectedMeasurement : "",
+                return  (loadedModel.isNotEmpty) ? DropdownButton<String>(
+                  value: (loaded) ? stationDataModel.selectedMeasurement : "",
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.blueAccent,
@@ -256,13 +350,22 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 0, top: 8, bottom: 8, right: 54),
                         child: Text(
-                          value,
-                          style: TextStyle(fontSize: 20),
-                        ),
+                            value[0].toUpperCase() +
+                                value.substring(
+                                  1,
+                                ),
+                            style: GoogleFonts.kanit(
+                                fontSize: 20,
+                                color: Colors.blue[700],
+                                fontWeight: FontWeight.w400)),
                       ),
                     );
                   }).toList(),
-                );
+                ) : Text("Loading...", style: GoogleFonts.kanit(
+                  fontSize: 18,
+                  color: Colors.blue[900],
+                  fontWeight: FontWeight.w500,
+                ));
               },
             ));
       },
