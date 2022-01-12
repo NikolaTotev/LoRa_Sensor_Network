@@ -6,9 +6,28 @@ import '../ProjectDataModels/ApiModel_SensorReadingEntry.dart';
 import 'dart:convert';
 
 class SensorDataModel extends ChangeNotifier {
-  ApiLogic_SensorData _logic_sensorData = ApiLogic_SensorData();
+	ApiLogic_SensorData _logic_sensorData = ApiLogic_SensorData();
 
-  Future<ApiModel_BasicLatestSensorReadings> getNewData() {
-    return _logic_sensorData.fetchLatestBasicSensorData();
-  }
+	bool loaded = false;
+	late ApiModel_BasicLatestSensorReadings latestData;
+
+	Future<ApiModel_BasicLatestSensorReadings> getNewData() {
+		debugPrint("getting new data");
+		return _logic_sensorData.fetchLatestBasicSensorData();
+	}
+
+	Future<void> updateData () async {
+		loaded = false;
+		notifyListeners();
+		Future<ApiModel_BasicLatestSensorReadings> rawFutureData = getNewData();
+		latestData = await rawFutureData;
+		loaded = true;
+		notifyListeners();
+	}
+
+	void refresh() {
+		loaded = false;
+		notifyListeners();
+		updateData();
+	}
 }
