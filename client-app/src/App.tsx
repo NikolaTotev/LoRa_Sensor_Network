@@ -1,56 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import * as signalR from "@microsoft/signalr";
+import React from 'react';
 import ButtonAppBar from './components/Header';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import { ServerSocketProvider } from './contexts/ServerSocket';
+import Home from './pages/Home';
 
-function App() {
-  const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:44374/initTry", {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    })
-    .configureLogging(signalR.LogLevel.Information)
-    .withAutomaticReconnect()
-    .build();
- 
-  // Starts the SignalR connection
-  hubConnection.start().then(a => {
-    // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
-    if (hubConnection.connectionId) {
-      hubConnection.invoke("SendConnectionId", hubConnection.connectionId);
-    }
-  });  
- 
-  const SignalRTime: React.FC = () => {      
-    // Sets the time from the server
-    const [time, setTime] = useState<string | null>(null);
-
-    useEffect(() => {
-      hubConnection.on("SetTime", message => {
-        setTime(message);
-      });     
-    });
- 
-    return <p>The time is {time}</p>;
-  };
- 
-  const SignalRClient: React.FC = () => {
-    // Sets a client message, sent from the server
-    const [clientMessage, setClientMessage] = useState<string | null>(null);
- 
-    useEffect(() => {
-      hubConnection.on("SetClientMessage", message => {
-        setClientMessage(message);
-      });
-    });
- 
-    return <p>{clientMessage}</p>
-  };
- 
-  return (<>
-    <ButtonAppBar />
-    <SignalRTime /><SignalRClient />
-  </>);
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ServerSocketProvider>
+        <CssBaseline />
+        <ButtonAppBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </ServerSocketProvider>
+    </BrowserRouter>
+  );
 }
-
-export default App;
