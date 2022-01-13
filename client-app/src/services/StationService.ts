@@ -16,7 +16,7 @@ export interface Station {
   numberOfMessages: number; //1
   stationID: string; //"eui-a8610a3032306f09"
   stationName: string; //"Station-1"
-  supportedMeasurements: string[]; //    "breathVocEquivalent", "co2Equivalent", "humidity", "iaq", "iaqAccuracy", "pressure", "staticIaq","temperature"]
+  supportedMeasurements: string; // "breathVocEquivalent", "co2Equivalent", "humidity", "iaq", "iaqAccuracy", "pressure", "staticIaq","temperature"
 }
 
 class StationService {

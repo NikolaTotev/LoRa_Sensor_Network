@@ -6,7 +6,7 @@ interface AsyncState<T> {
   error: Error | null;
 }
 
-export default function useAsync<T>(action: () => Promise<T>, depencies: any[]) {
+export default function useAsync<T>(action: () => Promise<T>, dependencies: any[]) {
   const [state, setState] = useState<AsyncState<T>>({
     data: null,
     loading: true,
@@ -33,7 +33,8 @@ export default function useAsync<T>(action: () => Promise<T>, depencies: any[]) 
     return (() => {isCancelled = true;});
   };
 
-  useEffect(reload, depencies);
+  // eslint-disable-next-line
+  useEffect(reload, dependencies);
 
   return {...state, reload};
 }
