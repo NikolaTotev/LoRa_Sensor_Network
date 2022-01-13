@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="67985092-df96-4782-afdd-8724d1fbcabd" activeEnvironment="Default" name="Project 1" resourceRoot="" soapui-version="5.6.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="07e3bb7d-d06a-4ffb-bf1a-d28afb9f1cd6" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://localhost:44374" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>https://localhost:44374</con:endpoint></con:endpoints><con:resource name="SensorUplinkHandler" path="/api/StationSensorReadingsWindowed" id="2188b598-e496-4887-b740-fe69171a2170"><con:settings/><con:parameters><con:parameter><con:name>startDate</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>endDate</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>stationID</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="SensorUplinkHandler 1" id="b362c12f-8157-4002-ad31-e03c4ff0e4c0" method="GET"><con:settings/><con:parameters><con:parameter><con:name>content-type</con:name><con:value>application/json</con:value><con:style>HEADER</con:style><con:default>application/json</con:default></con:parameter></con:parameters><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/problem+json; charset=utf-8</con:mediaType><con:status>400</con:status><con:params/><con:element xmlns:sen="https://localhost/webhookhandlers/SensorUplinkHandler">sen:Fault</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>400</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>400</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="WebHook_Sim" id="49c7de23-8588-4a09-8251-02a1849c87bd" mediaType="application/json" postQueryString="false"><con:settings/><con:endpoint>https://localhost:44374</con:endpoint><con:request>{
+	"end_device_ids": {
+	  "device_id": "eui-a8610a3032306f09",
+	  "application_ids": {
+		"application_id": "lora-sensor-mesh-stack-test"
+	  },
+	  "dev_eui": "A8610A3032306F09",
+	  "join_eui": "70B3D57ED0032B07",
+	  "dev_addr": "260BC82F"
+	},
+	"correlation_ids": [
+	  "as:up:01FNA2RBEBCVY6RXBNG9WQM45M",
+	  "gs:conn:01FN8HW64SNFWXGVJASQK6203V",
+	  "gs:up:host:01FN8HW64ZS3QK93P0M9QTMV9F",
+	  "gs:uplink:01FNA2RB7E0TNB546R6M1M90EM",
+	  "ns:uplink:01FNA2RB7G2FEFSCASD4WG2EAE",
+	  "rpc:/ttn.lorawan.v3.GsNs/HandleUplink:01FNA2RB7G3T5ESAH30G79HGZ0",
+	  "rpc:/ttn.lorawan.v3.NsAs/HandleUplink:01FNA2RBEB4N3WSSA0948XB62Y"
+	],
+	"received_at": "2021-11-24T22:58:41.228764300Z",
+	"uplink_message": {
+	  "session_key_id": "AX1RJsU9hwzUAGKV6vF1oA==",
+	  "f_port": 2,
+	  "f_cnt": 419,
+	  "frm_payload": "MjIuMTk=",
+	  "decoded_payload": {
+		"temperature": "22.19"
+	  },
+	  "rx_metadata": [
+		{
+		  "gateway_ids": {
+			"gateway_id": "sofia-gtw1-nikola",
+			"eui": "A840411D1FBC4150"
+		  },
+		  "time": "2021-11-24T22:58:40.978395Z",
+		  "timestamp": 4012756379,
+		  "rssi": -34,
+		  "channel_rssi": -34,
+		  "snr": 6.8,
+		  "uplink_token": "Ch8KHQoRc29maWEtZ3R3MS1uaWtvbGESCKhAQR0fvEFQEJubt/kOGgsIoYf7jAYQnejqAiD4yqzX5NMLKgwIoIf7jAYQ+L7E0gM=",
+		  "channel_index": 2
+		}
+	  ],
+	  "settings": {
+		"data_rate": {
+		  "lora": {
+			"bandwidth": 125000,
+			"spreading_factor": 7
+		  }
+		},
+		"coding_rate": "4/5",
+		"frequency": "868500000",
+		"timestamp": 4012756379,
+		"time": "2021-11-24T22:58:40.978395Z"
+	  },
+	  "received_at": "2021-11-24T22:58:41.008166199Z",
+	  "confirmed": true,
+	  "consumed_airtime": "0.051456s",
+	  "locations": {
+		"user": {
+		  "latitude": 42.6781407739309,
+		  "longitude": 23.332748115062717,
+		  "source": "SOURCE_REGISTRY"
+		}
+	  },
+	  "version_ids": {
+		"brand_id": "arduino",
+		"model_id": "mkr-wan-1310",
+		"hardware_version": "1.0",
+		"firmware_version": "1.2.0",
+		"band_id": "EU_863_870"
+	  },
+	  "network_ids": {
+		"net_id": "000013",
+		"tenant_id": "ttn",
+		"cluster_id": "ttn-eu1"
+	  }
+	}
+  }</con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="endDate" value=""/>
+  <con:entry key="content-type" value="application/json"/>
+  <con:entry key="startDate" value=""/>
+  <con:entry key="stationID" value=""/>
+</con:parameters><con:parameterOrder><con:entry>content-type</con:entry><con:entry>startDate</con:entry><con:entry>endDate</con:entry><con:entry>stationID</con:entry></con:parameterOrder></con:request><con:request name="GetSensorReadingsWindowed" id="39fd23c1-9552-4264-b02a-f4eb649b2fea" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://localhost:44374</con:endpoint><con:request/><con:originalUri>https://localhost/webhookhandlers/SensorUplinkHandler</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="endDate" value="2022/02/09"/>
+  <con:entry key="startDate" value="2022/01/09"/>
+  <con:entry key="stationID" value="eui-a8610a3032306f09"/>
+</con:parameters><con:parameterOrder><con:entry>content-type</con:entry><con:entry>startDate</con:entry><con:entry>endDate</con:entry><con:entry>stationID</con:entry></con:parameterOrder></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

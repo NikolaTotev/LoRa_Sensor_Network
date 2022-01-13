@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 using LoRa_Sensor_Network_Blazor_Server_App.Hubs;
 using Microsoft.AspNetCore.SignalR;
@@ -30,12 +31,17 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddRazorPages();
-            //services.AddServerSideBlazor();
-            //services.AddSingleton<WeatherForecastService>();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<UplinkDataAccess>();
+            services.AddSingleton<DateService>();
+            services.AddTransient<UplinkDataService>();
+            services.AddTransient<DataProcessingService>();
+            services.AddSingleton<SensorReadingsDataAccess>();
+            services.AddSingleton<StationInfoDataAccess>();
             services.AddSignalR();
             services.AddCors(options =>
                 options.AddPolicy("CorsPolicy",
@@ -69,9 +75,9 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapBlazorHub();
-                //endpoints.MapFallbackToPage("/_Host");
-                //endpoints.MapControllers();
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapControllers();
 
                 endpoints.MapHub<InitHub>("/initTry");
                 endpoints.MapControllerRoute(

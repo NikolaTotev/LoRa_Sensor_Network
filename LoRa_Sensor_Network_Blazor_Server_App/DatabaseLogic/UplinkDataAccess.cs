@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
 using System.Data.SqlClient;
 using Dapper;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
 using Microsoft.Extensions.Configuration;
 
@@ -14,21 +15,67 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic
 {
     public class UplinkDataAccess
     {
-        private DbConnectionOptions m_Options;
-        private readonly IConfiguration configuration;
-
-        public UplinkDataAccess(IConfiguration config)
+        private readonly IConfiguration m_Configuration;
+        private string connectionString;
+        private DateService m_DateService;
+        public UplinkDataAccess(IConfiguration config, DateService dateService)
         {
-            configuration = config;
+            m_Configuration = config;
+            connectionString = m_Configuration.GetConnectionString("LoraDB");
+            m_DateService = dateService;
+        }
+        
+        public void AddEntrySensorReading(DbModel_SensorReadingEntry entry)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(
+                    "dbo.spSensorData_AddEntrySensorReading @readingID, @originID, @payload, @timeOfCapture",
+                    new
+                    {
+                        readingID = entry.readingID,
+                        originID = entry.originID,
+                        payload = entry.payload,
+                        timeOfCapture = entry.timeOfCapture
+                    });
+            }
         }
 
-        public void InsertSensorReading()
+        public void AddEntrySignalData(DbModel_SignalDataEntry entry)
         {
-            ConfigurationManager manager = new ConfigurationManager();
-            string conString = configuration.GetConnectionString("LoraDB");
-            using (SqlConnection connection = new SqlConnection(conString))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                connection.Execute("insert into uplinkdata (uplinkID) values (1)");
+                connection.Execute(
+                    "dbo.spSignalData_AddEntrySignalData @entryID, @relatedSensorData, @sessionKeyID, @rssi,@snr, @spreadingFactor, @confirmed, @bandID, @clusterID, @tenantID, @consumedAirtime, @gateway",
+                    new
+                    {
+                        entryID = entry.entryID,
+                        relatedSensorData = entry.relatedSensorData,
+                        sessionKeyID = entry.sessionKeyID,
+                        rssi = entry.rssi,
+                        snr = entry.snr,
+                        spreadingFactor = entry.spreadingFactor,
+                        confirmed = entry.confirmed,
+                        bandID = entry.bandID,
+                        clusterID = entry.clusterID,
+                        tenantID = entry.tenantID,
+                        consumedAirtime = entry.consumedAirtime,
+                        gateway = entry.gateway
+                    });
+            }
+        }
+
+        public void UpdateFieldStationLastSeen(string id)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(
+                    "dbo.spStations_UpdateFieldStationLastSeen @lastSeen, @StationID",
+                    new
+                    {
+                        lastSeen = m_DateService.GetUTCDate(),
+                        StationID = id
+                    });
             }
         }
     }

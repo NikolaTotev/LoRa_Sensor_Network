@@ -7,28 +7,47 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.Data;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
+using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
 {
-    [Microsoft.AspNetCore.Mvc.Route("ttnhooks/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("webhookhandlers/[controller]")]
     [ApiController]
     public class SensorUplinkHandlerController : ControllerBase
     {
-        private WeatherForecastService m_TempService;
-        public SensorUplinkHandlerController(WeatherForecastService service)
+        private UplinkDataService m_DataService;
+        public SensorUplinkHandlerController(UplinkDataService service)
         {
-            m_TempService = service;
+            m_DataService = service;
         }
 
         [HttpPost]
         public void ProcessUplink([FromBody] dynamic data)
         {
-            LoRaUplink uplinkData = ToObject<LoRaUplink>(data);
-            int a = 0;
+            LoRaUplink uplinkData = new LoRaUplink(); //= ToObject<LoRaUplink>(data);
+            string jsonString = data.ToString();
+            dynamic deserializedObject = JsonConvert.DeserializeObject(jsonString);
+            
+            var uplinkObjectDynamicForm = deserializedObject.uplink_message;
+            string uplinkObjectJsonString = JsonConvert.SerializeObject(uplinkObjectDynamicForm);
+            UplinkMessage uplinkMessage = JsonConvert.DeserializeObject<UplinkMessage>(uplinkObjectJsonString);
+
+            var endDeviceIdsDynamicForm = deserializedObject.end_device_ids;
+            string endDeviceIdsJsonString = JsonConvert.SerializeObject(endDeviceIdsDynamicForm);
+            EndDeviceIDs endDeviceIDs = JsonConvert.DeserializeObject<EndDeviceIDs>(endDeviceIdsJsonString);
+
+            string receivedAt = deserializedObject.received_at.ToString();
+
+            uplinkData.uplink_message = uplinkMessage;
+            uplinkData.end_device_ids = endDeviceIDs;
+            uplinkData.received_at = receivedAt;
+            
+            m_DataService.ProcessUplink(uplinkData);
         }
 
         public static T ToObject<T>(JsonElement element)
@@ -37,7 +56,5 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
             
         }
-
-        public string uplinkData;
     }
 }
