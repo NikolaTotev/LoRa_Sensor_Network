@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
-
+using LoRa_Sensor_Network_Blazor_Server_App.Hubs;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
 {
@@ -21,9 +21,12 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
     public class SensorUplinkHandlerController : ControllerBase
     {
         private UplinkDataService m_DataService;
-        public SensorUplinkHandlerController(UplinkDataService service)
+        private SocketHub m_SocketHub;
+
+        public SensorUplinkHandlerController(UplinkDataService service, SocketHub hub)
         {
             m_DataService = service;
+            m_SocketHub = hub;
         }
 
         [HttpPost]
@@ -48,6 +51,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
             uplinkData.received_at = receivedAt;
             
             m_DataService.ProcessUplink(uplinkData);
+            m_SocketHub.SendData(); //Izmisli kak da go testvash tva....
         }
 
         public static T ToObject<T>(JsonElement element)

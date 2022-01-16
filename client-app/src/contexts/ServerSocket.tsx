@@ -1,9 +1,10 @@
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import env from "react-dotenv";
 
 interface ServerSocketProps {
   socket: signalR.HubConnection;
+  loading: boolean;
 }
 
 const ServerSocketContext = createContext<ServerSocketProps>(null as any);
@@ -13,7 +14,8 @@ interface ServerSocketProviderProps {
 }
 
 export function ServerSocketProvider({children}: ServerSocketProviderProps) {
-  const ENDPOINT = `${env.API_URL}/initTry`;
+  const ENDPOINT = `${env.API_URL}/socket`;
+  const [ loading, setLoading ] = useState(true);
 
   const hubConnection = new signalR.HubConnectionBuilder()
     .withUrl(ENDPOINT, {
@@ -24,16 +26,17 @@ export function ServerSocketProvider({children}: ServerSocketProviderProps) {
     .withAutomaticReconnect()
     .build();
 
-  // Starts the SignalR connection
-  hubConnection.start().then(a => {
-    // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
-    if (hubConnection.connectionId) {
-      hubConnection.invoke("SendConnectionId", hubConnection.connectionId);
+  useEffect(() => {
+    console.log(hubConnection.state)
+    if (hubConnection.state !== 'Connected') {
+      hubConnection.start().then(a => {
+        setLoading(false);
+      });
     }
-  });
+  })
 
   return (
-    <ServerSocketContext.Provider value={{socket: hubConnection}}>
+    <ServerSocketContext.Provider value={{socket: hubConnection, loading}}>
       { children }
     </ServerSocketContext.Provider>
   )

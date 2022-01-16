@@ -79,23 +79,10 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
 
-                endpoints.MapHub<InitHub>("/initTry");
+                endpoints.MapHub<SocketHub>("/socket");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-            hostApplicationLifetime.ApplicationStarted.Register(() =>
-            {
-                var serviceProvider = app.ApplicationServices;
-                var chatHub = (IHubContext<InitHub>)serviceProvider.GetService(typeof(IHubContext<InitHub>));
-
-                var timer = new System.Timers.Timer(1000);
-                timer.Enabled = true;
-                timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
-                    chatHub.Clients.All.SendAsync("SetTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
-                };
-                timer.Start();
             });
         }
     }

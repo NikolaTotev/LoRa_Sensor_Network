@@ -2,50 +2,47 @@ import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import useSocket from "../contexts/ServerSocket";
-import useAsync from "../hooks/useAsync";
-import stationService from "../services/StationService";
+
+interface AverageData {
+  averageTemperature: string;
+  averageHumidity: string;
+  lastUpdate: string;
+}
 
 export default function Home() {
   const { socket: hubConnection } = useSocket();
+  
+  const [ averageData, setAverageData ] = useState<AverageData>({
+    averageTemperature: "",
+    averageHumidity: "",
+    lastUpdate: ""
+  });
 
-  const SignalRTime: React.FC = () => {
-    const [time, setTime] = useState<string | null>(null);
+  useEffect(() => {
+    hubConnection.on("SetAverageData", message => {
+      setAverageData(message);
+    });
+  });
 
-    useEffect(() => {
-      hubConnection.on("SetTime", message => {
-        setTime(message);
-      });
-    });
- 
-    return <Typography>The time is {time}</Typography>;
-  };
- 
-  const SignalRClient: React.FC = () => {
-    const [clientMessage, setClientMessage] = useState<string | null>(null);
- 
-    useEffect(() => {
-      hubConnection.on("SetClientMessage", message => {
-        setClientMessage(message);
-      });
-    });
- 
-    return <Typography>{clientMessage}</Typography>
-  };
- 
-  const { data: sensorReadings, loading, error } = useAsync(() => stationService.getStationReadings(), []);
+  useEffect(() => {
+    if (hubConnection.state === 'Connected') {
+      hubConnection.invoke("SendAverageData");
+    }
+  });
 
   return (<>
-    <SignalRTime /><SignalRClient />
-    <Loading loading={loading} error={error}>
+    <Loading loading={averageData.lastUpdate === ""} error={null}>
       {() => (<>
         <Typography>
-          {sensorReadings?.averageHumidity}
+          Sofia
+          <br/>
+          {averageData.lastUpdate}
         </Typography>
         <Typography>
-          {sensorReadings?.averageTemperature}
+          {averageData.averageTemperature} °C
         </Typography>
         <Typography>
-          {sensorReadings?.lastUpdate}
+          {averageData.averageHumidity} %
         </Typography>
         </>)}
     </Loading>
