@@ -27,6 +27,10 @@ class StationService {
   async getStationList() {
     return httpService.get<Station[]>('api/GetStationList');
   }
+
+  async getSensorReadingsWindowed(startDate: string, endDate: string, stationId: string) {
+    return httpService.get<string[]>(`api/StationSensorReadingsWindowed?startDate=${startDate}&endDate=${endDate}&stationId=${stationId}`);
+  }
 }
 
 const stationService = new StationService();

@@ -1,4 +1,4 @@
-import { TextField, Typography, MenuItem, Select, Box, SelectChangeEvent, OutlinedInput, InputLabel, FormControl } from "@mui/material";
+import { TextField, Typography, MenuItem, Select, Box, SelectChangeEvent, OutlinedInput, InputLabel, FormControl, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -8,6 +8,7 @@ import stationService from "../services/StationService";
 import Loading from "../components/Loading";
 import Chip from '@mui/material/Chip';
 import { Theme, useTheme } from '@mui/material/styles';
+import Demo from "../components/demo";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -40,6 +41,11 @@ export default function History() {
   const [ allMeasurements, setAllMeasurements ] = useState<string[]>([]);
   const [selectedMeasurements, setSelectedMeasurements] = useState<string[]>([]);
   const theme = useTheme();
+
+  const { data } = useAsync(() => stationService.getSensorReadingsWindowed((new Date()).toISOString(), (new Date()).toISOString(), "eui-a8610a3032306f09"), []);
+  useEffect(() => {
+    console.log(data);
+  });
 
   function getSupportedMeasurements(measurements: string): string[] {
     const result: any = JSON.parse(measurements);
@@ -123,5 +129,9 @@ export default function History() {
         </Select>
         </FormControl>)}
      </Loading>
+     <Button>
+       Generate chart
+     </Button>
+     <Demo />
    </>);
 }
