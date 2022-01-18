@@ -31,7 +31,6 @@ export default function Stations() {
         && stationList
         && stationList[selectedIndex] 
         && selectedMeasurment !== "") {
-          console.log(stationList);
           const result: any = JSON.parse(message.payload);
           setLiveData(result[selectedMeasurment]);
       }

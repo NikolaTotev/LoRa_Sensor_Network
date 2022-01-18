@@ -27,7 +27,6 @@ export function ServerSocketProvider({children}: ServerSocketProviderProps) {
     .build();
 
   useEffect(() => {
-    console.log(hubConnection.state)
     if (hubConnection.state !== 'Connected') {
       hubConnection.start().then(a => {
         setLoading(false);

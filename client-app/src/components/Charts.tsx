@@ -63,7 +63,6 @@ export default function Charts({ stations, typesOfMeasurement, startDate, endDat
         })
       });
 
-      console.log(data)
       setChartData(data);
     }
   }, [stationReadings]);
