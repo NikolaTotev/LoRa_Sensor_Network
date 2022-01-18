@@ -19,6 +19,13 @@ export interface Station {
   supportedMeasurements: string; // "breathVocEquivalent", "co2Equivalent", "humidity", "iaq", "iaqAccuracy", "pressure", "staticIaq","temperature"
 }
 
+export interface Reading {
+  originID: string; //"eui-a8610a3032306f09"
+  payload: string; //"{\r\n  \"breathVocEquivalent\": \"0.53\",\r\n  \"co2Equivalent\": \"517.50\",\r\n  \"humidity\": \"37.82\",\r\n  \"iaq\": \"35.02\",\r\n  \"iaqAccuracy\": \"0\",\r\n  \"pressure\": \"94928.00\",\r\n  \"staticIaq\": \"29.38\",\r\n  \"temperature\": \"20.61\"\r\n}"
+  readingID: string; // "b78655e0-5f8f-45f2-aede-1084cecd599a"
+  timeOfCapture: Date; //"2022-01-18T00:40:41.697"
+}
+
 class StationService {
   async getStationReadings() {
     return httpService.get<LatestSensorReading>('api/SensorReadings');
@@ -29,7 +36,7 @@ class StationService {
   }
 
   async getSensorReadingsWindowed(startDate: string, endDate: string, stationId: string) {
-    return httpService.get<string[]>(`api/StationSensorReadingsWindowed?startDate=${startDate}&endDate=${endDate}&stationId=${stationId}`);
+    return httpService.get<Reading[]>(`api/StationSensorReadingsWindowed?startDate=${startDate}&endDate=${endDate}&stationId=${stationId}`);
   }
 }
 

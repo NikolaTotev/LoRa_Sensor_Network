@@ -8,7 +8,7 @@ import stationService from "../services/StationService";
 import Loading from "../components/Loading";
 import Chip from '@mui/material/Chip';
 import { Theme, useTheme } from '@mui/material/styles';
-import Demo from "../components/demo";
+import Demo from "../components/Charts";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,11 +41,6 @@ export default function History() {
   const [ allMeasurements, setAllMeasurements ] = useState<string[]>([]);
   const [selectedMeasurements, setSelectedMeasurements] = useState<string[]>([]);
   const theme = useTheme();
-
-  const { data } = useAsync(() => stationService.getSensorReadingsWindowed((new Date()).toISOString(), (new Date()).toISOString(), "eui-a8610a3032306f09"), []);
-  useEffect(() => {
-    console.log(data);
-  });
 
   function getSupportedMeasurements(measurements: string): string[] {
     const result: any = JSON.parse(measurements);
@@ -99,7 +94,7 @@ export default function History() {
       />
      </LocalizationProvider>
      <Loading loading={loading} error={error}>
-        {() => (<FormControl sx={{width: 300 }}>
+        {() => (<><FormControl sx={{width: 300 }}>
           <InputLabel id="demo-multiple-chip-label">Type</InputLabel>
           <Select
           labelId="demo-multiple-chip-label"
@@ -127,11 +122,11 @@ export default function History() {
             </MenuItem>
           ))}
         </Select>
-        </FormControl>)}
+        
+        </FormControl>
+        {startDate && endDate && stationList && selectedMeasurements.length > 0 && <Demo startDate={startDate} endDate={endDate} typesOfMeasurement={selectedMeasurements} stations={stationList}/>}
+        </>)}
      </Loading>
-     <Button>
-       Generate chart
-     </Button>
-     <Demo />
+     
    </>);
 }
