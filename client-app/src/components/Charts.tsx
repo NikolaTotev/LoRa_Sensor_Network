@@ -3,31 +3,15 @@ import Paper from '@mui/material/Paper';
 import {
   ArgumentAxis,
   ValueAxis,
-  BarSeries,
   Chart,
   LineSeries,
   Legend,
 } from '@devexpress/dx-react-chart-material-ui';
-import { ValueScale } from '@devexpress/dx-react-chart';
+import { ArgumentScale, ValueScale } from '@devexpress/dx-react-chart';
+import { scaleLinear, scaleTime } from 'd3-scale';
 import stationService, { Reading, Station } from '../services/StationService';
 import useAsync from '../hooks/useAsync';
 import Loading from './Loading';
-
-interface IDataItem {
-  month: string,
-  sale: number,
-  total: number,
-  smth: number;
-}
-
-const chartData1: IDataItem[] = [
-  { month: 'Jan', sale: 50, total: 987, smth: 200 },
-  { month: 'Feb', sale: 100, total: 3000, smth: 250 },
-  { month: 'March', sale: 30, total: 1100, smth: 210 },
-  { month: 'April', sale: 107, total: 7100, smth: 260 },
-  { month: 'May', sale: 95, total: 4300, smth: 220 },
-  { month: 'June', sale: 150, total: 7500, smth: 300 },
-];
 
 interface ChartsProps {
   stations: Station[];
@@ -82,7 +66,7 @@ export default function Charts({ stations, typesOfMeasurement, startDate, endDat
       console.log(data)
       setChartData(data);
     }
-  }, [stationReadings])
+  }, [stationReadings]);
 
   return (
     <Loading loading={loading} error={error}>
@@ -91,23 +75,24 @@ export default function Charts({ stations, typesOfMeasurement, startDate, endDat
       <Chart
         data={chartData}
       >
-        {/* {typesOfMeasurement.map((type) => <ValueScale name={type} key={`scale-${type}`} />)} */}
-        <ValueScale name="scale" />
+        {typesOfMeasurement.map((type) => <ValueScale factory={scaleLinear} name={type} key={`scale-${type}`} />)}
+        {/* <ValueScale name="scale" /> */}
+        <ArgumentScale factory={scaleTime} />
         <ArgumentAxis />
-        {/* {typesOfMeasurement.map((type) => <ValueAxis scaleName={type} showGrid={false} showLine={true} showTicks={true} key={`axis-${type}`}/>)} */}
-        <ValueAxis scaleName="scale" position="right" showGrid={false} showLine={true} showTicks={true} />
+        {typesOfMeasurement.map((type) => <ValueAxis scaleName={type} showGrid={false} showLine={true} key={`axis-${type}`}/>)}
+        {/* <ValueAxis scaleName="scale" position="right" showGrid={false} showLine={true} showTicks={true} /> */}
 
-        {stationReadings && stationReadings.map((stationReading) => (<React.Fragment key={stationReading.station.stationID}>
-          {stationReading.neededMeasurements.map((measurement) => (
+        {stationReadings && stationReadings.map((stationReading) => (
+          stationReading.neededMeasurements.map((measurement) => (
             <LineSeries
               name={`${stationReading.station.stationName}  ${measurement}`}
               valueField={`${stationReading.station.stationID}-${measurement}`}
-              scaleName="scale"
+              scaleName={measurement}
               argumentField='timeOfCapture'
               key={`${stationReading.station.stationName}  ${measurement}`}
             />
-          ))}
-        </React.Fragment>))}
+          )))).flat(1)}
+
         <Legend position="bottom" />
       </Chart>
     </Paper>

@@ -19,6 +19,7 @@
     "@types/node": "^12.20.37",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "d3-scale": "^4.0.2",
     "date-fns": "^2.28.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -56,5 +57,8 @@
     "whitelist": [
       "API_URL"
     ]
+  },
+  "devDependencies": {
+    "@types/d3-scale": "^4.0.2"
   }
 }

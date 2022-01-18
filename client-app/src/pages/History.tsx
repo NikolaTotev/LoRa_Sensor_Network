@@ -40,6 +40,7 @@ export default function History() {
   const { data: stationList, loading, error } = useAsync(() => stationService.getStationList(), []);
   const [ allMeasurements, setAllMeasurements ] = useState<string[]>([]);
   const [selectedMeasurements, setSelectedMeasurements] = useState<string[]>([]);
+  const [generatedChart, setGeneratedChart] = useState(false);
   const theme = useTheme();
 
   function getSupportedMeasurements(measurements: string): string[] {
@@ -51,10 +52,17 @@ export default function History() {
     const {
       target: { value },
     } = event;
+    setGeneratedChart(false);
     setSelectedMeasurements(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+  };
+
+  const handleClick = () => {
+    if (endDate && startDate && stationList && stationList.length > 0 && selectedMeasurements.length > 0) {
+      setGeneratedChart(true);
+    }
   };
 
   useEffect(() => {
@@ -77,6 +85,7 @@ export default function History() {
         label="Start Date"
         value={startDate}
         onChange={(newValue) => {
+          setGeneratedChart(false);
           setStartDate(newValue);
         }}
         maxDate={endDate}
@@ -86,6 +95,7 @@ export default function History() {
         label="End Date"
         value={endDate}
         onChange={(newValue) => {
+          setGeneratedChart(false);
           setEndDate(newValue);
         }}
         maxDate={new Date()}
@@ -124,7 +134,8 @@ export default function History() {
         </Select>
         
         </FormControl>
-        {startDate && endDate && stationList && selectedMeasurements.length > 0 && <Demo startDate={startDate} endDate={endDate} typesOfMeasurement={selectedMeasurements} stations={stationList}/>}
+        <Button onClick={handleClick} disabled={generatedChart}>Generate Chart</Button>
+        {generatedChart && <Demo startDate={startDate!} endDate={endDate!} typesOfMeasurement={selectedMeasurements} stations={stationList!}/>}
         </>)}
      </Loading>
      
