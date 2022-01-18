@@ -1,4 +1,4 @@
-import { TextField, Typography, MenuItem, Select, Box, SelectChangeEvent, OutlinedInput, InputLabel, FormControl, Button } from "@mui/material";
+import { TextField, Typography, MenuItem, Select, Box, SelectChangeEvent, OutlinedInput, InputLabel, FormControl, Button, Container, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -8,7 +8,7 @@ import stationService from "../services/StationService";
 import Loading from "../components/Loading";
 import Chip from '@mui/material/Chip';
 import { Theme, useTheme } from '@mui/material/styles';
-import Demo from "../components/Charts";
+import Charts from "../components/Charts";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -78,66 +78,69 @@ export default function History() {
     setAllMeasurements(measurements);
   }, [stationList]);
 
-  return (<>
-     <Typography>History</Typography>
-     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Start Date"
-        value={startDate}
-        onChange={(newValue) => {
-          setGeneratedChart(false);
-          setStartDate(newValue);
-        }}
-        maxDate={endDate}
-        renderInput={(params) => <TextField {...params} />}
-      />
-      <DatePicker
-        label="End Date"
-        value={endDate}
-        onChange={(newValue) => {
-          setGeneratedChart(false);
-          setEndDate(newValue);
-        }}
-        maxDate={new Date()}
-        minDate={startDate}
-        renderInput={(params) => <TextField {...params} />}
-      />
-     </LocalizationProvider>
+  return (<Container maxWidth="lg">
+     <Typography variant="h3" gutterBottom component="div" align="center" sx={{color: '#0d47a1', marginTop: 2}}>
+       History
+      </Typography>
      <Loading loading={loading} error={error}>
-        {() => (<><FormControl sx={{width: 300 }}>
-          <InputLabel id="demo-multiple-chip-label">Type</InputLabel>
-          <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
-          multiple
-          value={selectedMeasurements}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selectedMeasurements) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selectedMeasurements.map((value) => (
-                <Chip key={value} label={value} />
+        {() => (<Stack direction="row" spacing={2} sx={{marginTop: 3, border: '1 solid gray.500', borderRadius: '15px', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px', padding: 3}}>
+          <Stack direction="column" spacing={3} sx={{marginTop: 2}}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                onChange={(newValue) => {
+                  setGeneratedChart(false);
+                  setStartDate(newValue);
+                }}
+                maxDate={endDate}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                onChange={(newValue) => {
+                  setGeneratedChart(false);
+                  setEndDate(newValue);
+                }}
+                maxDate={new Date()}
+                minDate={startDate}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+            <FormControl sx={{width: 300 }}>
+              <InputLabel id="multiple-chip-label">Type</InputLabel>
+              <Select
+                labelId="multiple-chip-label"
+                id="multiple-chip"
+                multiple
+                value={selectedMeasurements}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                renderValue={(selectedMeasurements) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selectedMeasurements.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+              {allMeasurements.map((measurement) => (
+                <MenuItem
+                  key={measurement}
+                  value={measurement}
+                  style={getStyles(measurement, selectedMeasurements, theme)}
+                >
+                  {measurement}
+                </MenuItem>
               ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {allMeasurements.map((measurement) => (
-            <MenuItem
-              key={measurement}
-              value={measurement}
-              style={getStyles(measurement, selectedMeasurements, theme)}
-            >
-              {measurement}
-            </MenuItem>
-          ))}
-        </Select>
-        
+            </Select>
         </FormControl>
-        <Button onClick={handleClick} disabled={generatedChart}>Generate Chart</Button>
-        {generatedChart && <Demo startDate={startDate!} endDate={endDate!} typesOfMeasurement={selectedMeasurements} stations={stationList!}/>}
-        </>)}
+        <Button variant="outlined" onClick={handleClick} disabled={generatedChart}>Generate Chart</Button>
+          </Stack>
+        {generatedChart && <Box sx={{flexGrow: 1}}><Charts startDate={startDate!} endDate={endDate!} typesOfMeasurement={selectedMeasurements} stations={stationList!}/></Box>}
+        </Stack>)}
      </Loading>
-     
-   </>);
+   </Container>);
 }
