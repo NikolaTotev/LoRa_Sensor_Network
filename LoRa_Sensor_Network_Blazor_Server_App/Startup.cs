@@ -46,7 +46,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
                     builder =>
                         builder.AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins("http://localhost:3000")
+                        .SetIsOriginAllowed(origin => true)
                         .AllowCredentials()));
         }
 
