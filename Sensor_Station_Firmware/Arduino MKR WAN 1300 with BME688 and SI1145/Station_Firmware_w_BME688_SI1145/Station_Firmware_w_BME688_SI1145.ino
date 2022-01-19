@@ -67,14 +67,47 @@ int calibrationTime = 0;
 void loop() 
 {
 
-  if(sensorCalibrated && calibrationTime > 300){  generateAndSendPacket();
+  if(sensorCalibrated && calibrationTime > 50){ 
+    generateAndSendPacket();
   
   delay(1000);
   
   checkForDownlink();
   
-  //Wait two minutes to send updated temp value.
-  delay(120000); }
+  long pastMillis = millis();
+
+  while((millis() - pastMillis ) < 120000){
+  
+     if (iaqSensor.run()) { // If new data is available
+    Serial.println("Waiting for 2 min...");
+    Serial.print("Temperature:");
+    Serial.print(iaqSensor.temperature);
+    Serial.print(",");
+    Serial.print("Humidity:");
+    Serial.print(iaqSensor.humidity);
+    Serial.print(",");
+    Serial.print("IAQAccuracy:");
+    Serial.print(iaqSensor.iaqAccuracy);
+    Serial.print(",");
+    Serial.print("IAQ:");
+    Serial.print(iaqSensor.iaq);
+    Serial.println();
+
+    resetDisplay();
+    display.println("Waiting|Basic data:");
+    display.print("Temp:");
+    display.println(iaqSensor.temperature);
+    display.print("Humid:");
+    display.println(iaqSensor.humidity);
+    display.print("IAQ Accur:");
+    display.println(iaqSensor.iaqAccuracy);
+    display.display();
+     delay(1000);
+     
+    }
+  }
+  
+  }
   else{
     if (iaqSensor.run()) { // If new data is available
     Serial.print("Temperature:");
@@ -232,7 +265,7 @@ void generateAndSendPacket() {
     display.print("Message number:");
     display.print(numberOfMessages);
     display.display();
-    delay(2000);
+    delay(200);
 
     resetDisplay();
     display.println("Basic data:");
@@ -241,7 +274,6 @@ void generateAndSendPacket() {
     display.print("Humid:");
     display.println(humidity);
     display.display();
-     delay(1000);
     
   } else {
     Serial.println("Error sending message :(");
