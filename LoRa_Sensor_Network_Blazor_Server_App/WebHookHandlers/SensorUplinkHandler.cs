@@ -50,7 +50,6 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
             uplinkData.received_at = receivedAt;
             
             m_DataService.ProcessUplink(uplinkData);
-            m_SocketHub.SendData(); //Izmisli kak da go testvash tva....
         }
 
         public static T ToObject<T>(JsonElement element)

@@ -55,11 +55,5 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Hubs
 
             await Clients.All.SendAsync("SetLatestReading", sensorReading);
         }
-
-
-        public void SendData()
-        {
-            _ = SendAverageData();
-        }
     }
 }
