@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using LoRa_Sensor_Network_Blazor_Server_App.DatabaseLogic;
 using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using LoRa_Sensor_Network_Blazor_Server_App.UtilityClasses;
+using LoRa_Sensor_Network_Blazor_Server_App.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App
 {
@@ -38,11 +40,19 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             services.AddTransient<DataProcessingService>();
             services.AddSingleton<SensorReadingsDataAccess>();
             services.AddSingleton<StationInfoDataAccess>();
+            services.AddSignalR();
+            services.AddCors(options =>
+                options.AddPolicy("CorsPolicy",
+                    builder =>
+                        builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(origin => true)
+                        .AllowCredentials()));
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -59,12 +69,18 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
+
+                endpoints.MapHub<SocketHub>("/socket");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
         }
     }

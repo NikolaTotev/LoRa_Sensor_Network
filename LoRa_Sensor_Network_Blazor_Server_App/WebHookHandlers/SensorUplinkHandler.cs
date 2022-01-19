@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
-
 namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
 {
     [Microsoft.AspNetCore.Mvc.Route("webhookhandlers/[controller]")]
@@ -20,6 +19,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.WebHookHandlers
     public class SensorUplinkHandlerController : ControllerBase
     {
         private UplinkDataService m_DataService;
+
         public SensorUplinkHandlerController(UplinkDataService service)
         {
             m_DataService = service;
