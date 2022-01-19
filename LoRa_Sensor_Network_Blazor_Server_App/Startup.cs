@@ -1,4 +1,3 @@
-using LoRa_Sensor_Network_Blazor_Server_App.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +30,6 @@ namespace LoRa_Sensor_Network_Blazor_Server_App
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<UplinkDataAccess>();
