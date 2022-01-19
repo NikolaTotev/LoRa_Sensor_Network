@@ -1,0 +1,18 @@
+version: '3'
+
+services: 
+  lora-server:
+    build: ./LoRa_Sensor_Network_Blazor_Server_App
+    ports:
+      - 44374:80
+    restart: on-failure:3
+
+  lora-client:
+    build: ./client-app
+    depends_on:
+      - lora-server
+    ports:
+      - 3000:3000
+    env_file:
+      - ./client-app/.env
+    restart: on-failure:3
