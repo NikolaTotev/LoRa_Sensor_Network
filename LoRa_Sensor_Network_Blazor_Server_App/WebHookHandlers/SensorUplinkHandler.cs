@@ -5,7 +5,6 @@ using System.Configuration;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using LoRa_Sensor_Network_Blazor_Server_App.Data;
 using LoRa_Sensor_Network_Blazor_Server_App.Models;
 using LoRa_Sensor_Network_Blazor_Server_App.Services;
 using Microsoft.Extensions.Configuration;
