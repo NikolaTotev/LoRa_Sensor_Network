@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace LoRa_Sensor_Network_Blazor_Server_App.Services
 {
@@ -10,7 +11,7 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
         public DateTime GetUTCDate()
         {
             DateTime timeUtc = DateTime.UtcNow;
-            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+            TimeZoneInfo cstZone = TZConvert.GetTimeZoneInfo("FLE Standard Time");
             DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
             return cstTime;
         }

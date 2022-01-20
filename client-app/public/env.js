@@ -1,3 +1,3 @@
 window.env = {
-  "API_URL": "https://nikolatotev-001-site1.ctempurl.com"
+  "API_URL": "http://localhost:44374"
 };
