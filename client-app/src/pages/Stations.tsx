@@ -53,6 +53,9 @@ export default function Stations() {
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
+    setSelectedMeasurement("");
+    setGeneratedChart(false);
+    setLiveData('');
     setSelectedIndex(index);
   };
 

@@ -22,7 +22,6 @@ export function ServerSocketProvider({children}: ServerSocketProviderProps) {
       skipNegotiation: true,
       transport: signalR.HttpTransportType.WebSockets
     })
-    .configureLogging(signalR.LogLevel.Information)
     .withAutomaticReconnect()
     .build();
 
