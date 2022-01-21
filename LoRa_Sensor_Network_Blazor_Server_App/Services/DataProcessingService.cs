@@ -48,7 +48,8 @@ namespace LoRa_Sensor_Network_Blazor_Server_App.Services
                 tempSum += convertedEntry;
             }
 
-            return tempSum / data.Count;
+            double avgResult = tempSum / data.Count;
+            return Math.Round(avgResult,2);
         }
 
         //A wrapper for the JsonConvert DeserializeObject function. Makes code using the function more readable.

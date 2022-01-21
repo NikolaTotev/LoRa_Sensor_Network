@@ -3,7 +3,7 @@ select * from sensordata
 select * from signalData
 
 -- UPLINK STORE PROCEDURES ====================================================================
-alter procedure dbo.spSensorData_AddEntrySensorReading
+create procedure dbo.spSensorData_AddEntrySensorReading
  @readingID varchar(255),
  @originID varchar(255),
  @payload text,
