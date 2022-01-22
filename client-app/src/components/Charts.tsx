@@ -56,7 +56,7 @@ export default function Charts({ stations, typesOfMeasurement, startDate, endDat
           const payload = getSupportedMeasurements(reading.payload);
           const neededResult: {[key: string]: any} = {};
           stationReading.neededMeasurements.forEach((measurement) => {
-            neededResult[`${stationReading.station.stationID}-${measurement}`] = payload[measurement];
+            neededResult[`${stationReading.station.stationID}-${measurement}`] = Number(payload[measurement]);
           })
           neededResult["timeOfCapture"] = new Date(reading["timeOfCapture"]);
           data.push(neededResult);
