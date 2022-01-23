@@ -75,11 +75,9 @@ export default function Charts({ stations, typesOfMeasurement, startDate, endDat
         data={chartData}
       >
         {typesOfMeasurement.map((type) => <ValueScale factory={scaleLinear} name={type} key={`scale-${type}`} />)}
-        {/* <ValueScale name="scale" /> */}
         <ArgumentScale factory={scaleTime} />
         <ArgumentAxis />
         {typesOfMeasurement.map((type) => <ValueAxis scaleName={type} showGrid={false} showLine={true} key={`axis-${type}`}/>)}
-        {/* <ValueAxis scaleName="scale" position="right" showGrid={false} showLine={true} showTicks={true} /> */}
 
         {stationReadings && stationReadings.map((stationReading) => (
           stationReading.neededMeasurements.map((measurement) => (
