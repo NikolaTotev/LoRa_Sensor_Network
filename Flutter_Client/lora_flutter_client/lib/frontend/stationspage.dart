@@ -104,7 +104,7 @@ class StationsPage extends StatelessWidget {
                             Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  loadedModel.stationName,
+                                  dataModel.selectedStation.stationName,
                                   style: GoogleFonts.kanit(
                                       fontSize: 60,
                                       color: Colors.blue[700],
@@ -119,7 +119,7 @@ class StationsPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              loadedModel.lastSeen.toString(),
+                              dataModel.selectedStation.lastSeen.toString(),
                               style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 color: Colors.blue[900],

@@ -33,6 +33,7 @@ class StationDataModel extends ChangeNotifier {
   Future<bool> LoadStationList() async {
     Future<List<dynamic>> rawDataFuture = getStationList();
     List<dynamic> rawData = await rawDataFuture;
+    stationList.clear();
     for (dynamic entry in rawData) {
       ApiModel_BasicStationInfo stationInfo = ApiModel_BasicStationInfo.fromJson(entry);
       stationList.add(stationInfo);
@@ -86,7 +87,7 @@ class StationDataModel extends ChangeNotifier {
 
     if (dataLoaded) {
       for (ApiModel_BasicStationInfo entry in stationList) {
-        ListTile listItem = ListTile(title: Text(entry.stationName));
+        ListTile listItem = ListTile(title: Text(entry.stationName), onTap: () {ChangeSelectedStation(stationList.indexOf(entry));},);
         result.add(listItem);
       }
 
@@ -177,8 +178,12 @@ class StationDataModel extends ChangeNotifier {
   }
 
   void ChangeSelectedStation(int index) {
+    debugPrint("Switing to station ${stationList[index].stationName}");
     selectedStation = stationList[index];
-    notifyListeners();
+    updateSelectedMeasurement(selectedStation.supportedMeasurements[0]);
+    LoadLatestStationData();
+    loadSelectedStationData();
+    reloadChart();
   }
 
   void reloadChart() async {
