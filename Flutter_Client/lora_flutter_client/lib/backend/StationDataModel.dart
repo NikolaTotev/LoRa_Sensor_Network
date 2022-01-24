@@ -22,9 +22,11 @@ class StationDataModel extends ChangeNotifier {
   List<ApiModel_BasicStationInfo> stationList = [];
   List<TimeSeries> chartData = [];
   List<ApiModel_SensorReadingEntry> listOfEntries = [];
-  String selectedMeasurement = "Loading...";
+  String selectedMeasurement = "";
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
+  bool canShowUI = false;
+  bool canShowDrop = false;
 
   Future<List<dynamic>> getStationList() {
     return _logic_stationData.fetchStationList();
@@ -40,7 +42,6 @@ class StationDataModel extends ChangeNotifier {
       debugPrint("Adding station ${stationInfo.stationName}");
     }
     selectedStation = stationList[0];
-    LoadLatestStationData();
     return true;
   }
 
@@ -54,6 +55,7 @@ class StationDataModel extends ChangeNotifier {
     return true;
   }
 
+  ///Loaded when "fetch data" btn is pressed.
   Future<bool> LoadReadingsList(String stationID) async {
     Future<List<ApiModel_SensorReadingEntry>> rawDataFuture =
         _logic_sensorData.fetchWindowOfEntries(selectedStartDate, selectedEndDate, stationID);
@@ -87,7 +89,12 @@ class StationDataModel extends ChangeNotifier {
 
     if (dataLoaded) {
       for (ApiModel_BasicStationInfo entry in stationList) {
-        ListTile listItem = ListTile(title: Text(entry.stationName), onTap: () {ChangeSelectedStation(stationList.indexOf(entry));},);
+        ListTile listItem = ListTile(
+          title: Text(entry.stationName),
+          onTap: () {
+            LoadStationData(stationList.indexOf(entry));
+          },
+        );
         result.add(listItem);
       }
 
@@ -97,7 +104,7 @@ class StationDataModel extends ChangeNotifier {
     }
   }
 
-  Future<ApiModel_BasicStationInfo> loadSelectedStationData() async {
+  Future<bool> loadSelectedStationData() async {
     Future<bool> dataLoadedFlagFuture;
     bool dataLoaded = false;
     if (stationList.isEmpty) {
@@ -107,20 +114,37 @@ class StationDataModel extends ChangeNotifier {
       dataLoaded = true;
     }
     if (dataLoaded) {
-      return selectedStation;
+      dataLoaded = false;
+
+      dataLoadedFlagFuture = LoadLatestStationData();
+      dataLoaded = await dataLoadedFlagFuture;
+
+      if (dataLoaded) {
+        dataLoaded = false;
+
+        dataLoadedFlagFuture = LoadReadingsList(selectedStation.stationID);
+        dataLoaded = await dataLoadedFlagFuture;
+        if (dataLoaded) {
+          Future<List<String>> supportedMeasurements = transformSupportedMeasurementList();
+          supportedMeasurementStringList = await supportedMeasurements;
+
+          if (supportedMeasurementStringList.isNotEmpty) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     } else {
-      return ApiModel_BasicStationInfo("", "Failed to load", 0, 0, DateTime.now(), "[]");
+      return false;
     }
   }
 
-  List<String> _transformSupportedMeasurements() {
-    List<String> result = [];
-    for (dynamic item in jsonDecode(selectedStation.supportedMeasurements)) {
-      result.add(item as String);
-    }
-
-    return result;
-  }
+  List<String> supportedMeasurementStringList = [];
 
   Future<List<String>> transformSupportedMeasurementList() async {
     Future<bool> dataLoadedFlagFuture;
@@ -177,12 +201,40 @@ class StationDataModel extends ChangeNotifier {
     }
   }
 
-  void ChangeSelectedStation(int index) {
+  Future<bool> InitialDataLoad() async {
+    Future<bool> dataLoadedFuture = loadSelectedStationData();
+    bool dataLoaded = await dataLoadedFuture;
+
+    if (dataLoaded) {
+      canShowUI = true;
+      return true;
+    } else {
+      canShowUI = false;
+      return false;
+    }
+  }
+
+  void LoadStationData(int index) async {
     debugPrint("Switing to station ${stationList[index].stationName}");
+    canShowUI = false;
+    notifyListeners();
+
+    Future<bool> dataLoadedFuture = loadSelectedStationData();
+    bool dataLoaded = await dataLoadedFuture;
     selectedStation = stationList[index];
-    updateSelectedMeasurement(selectedStation.supportedMeasurements[0]);
-    LoadLatestStationData();
-    loadSelectedStationData();
+    updateSelectedMeasurement(selectedStation.supportedMeasurements[index]);
+    selectedMeasurement = supportedMeasurementStringList[0];
+    debugPrint(jsonEncode(selectedStation.supportedMeasurements));
+    debugPrint(jsonEncode(selectedStationLatestData));
+    debugPrint(selectedMeasurement);
+
+    if (dataLoaded) {
+      canShowUI = true;
+    } else {
+      canShowUI = false;
+    }
+    notifyListeners();
+
     reloadChart();
   }
 

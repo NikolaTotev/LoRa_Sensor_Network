@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lora_flutter_client/backend/StationDataModel.dart';
+import 'package:lora_flutter_client/frontend/stationdatapage.dart';
 import 'package:lora_flutter_client/frontend/stationspage.dart';
 import 'package:provider/provider.dart';
 import 'backend/SensorDataModel.dart';
@@ -54,7 +55,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  List<Widget> _widgetOptions = <Widget>[Homepage(), StationsPage(), Homepage()];
+  List<Widget> _widgetOptions = <Widget>[Homepage(), StationDataPage(), Homepage()];
 
   void _onItemTapped(int index) {
     setState(() {
