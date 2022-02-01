@@ -80,10 +80,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             icon: Icon(Icons.podcasts),
             label: 'Stations',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            label: 'History',
-          ),
         ],
         selectedLabelStyle: GoogleFonts.kanit(
           fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.w800),

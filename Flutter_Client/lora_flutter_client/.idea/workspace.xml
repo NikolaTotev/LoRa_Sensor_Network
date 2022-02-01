@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac493046-5487-4b63-8cd6-30493d6ba743" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Documentation/LoRa_Sensor_Network_Presentation.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Documentation/LoRa_Sensor_Network_Presentation.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,26 +69,26 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="500" y="148" key="CommitChangelistDialog2/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643015677416" />
-    <state width="1877" height="407" key="GridCell.Tab.0.bottom" timestamp="1643018544624">
+    <state width="1860" height="404" key="GridCell.Tab.0.bottom" timestamp="1643702793432">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state width="1877" height="479" key="GridCell.Tab.0.bottom/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1642003077705" />
-    <state width="1877" height="407" key="GridCell.Tab.0.bottom/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643018544624" />
-    <state width="1877" height="407" key="GridCell.Tab.0.center" timestamp="1643018544623">
+    <state width="1860" height="404" key="GridCell.Tab.0.bottom/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643702793432" />
+    <state width="1860" height="404" key="GridCell.Tab.0.center" timestamp="1643702793432">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state width="1877" height="479" key="GridCell.Tab.0.center/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1642003077705" />
-    <state width="1877" height="407" key="GridCell.Tab.0.center/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643018544623" />
-    <state width="1877" height="407" key="GridCell.Tab.0.left" timestamp="1643018544623">
+    <state width="1860" height="404" key="GridCell.Tab.0.center/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643702793432" />
+    <state width="1860" height="404" key="GridCell.Tab.0.left" timestamp="1643702793432">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state width="1877" height="479" key="GridCell.Tab.0.left/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1642003077705" />
-    <state width="1877" height="407" key="GridCell.Tab.0.left/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643018544623" />
-    <state width="1877" height="407" key="GridCell.Tab.0.right" timestamp="1643018544623">
+    <state width="1860" height="404" key="GridCell.Tab.0.left/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643702793432" />
+    <state width="1860" height="404" key="GridCell.Tab.0.right" timestamp="1643702793432">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state width="1877" height="479" key="GridCell.Tab.0.right/-1920.290.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1642003077705" />
-    <state width="1877" height="407" key="GridCell.Tab.0.right/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643018544623" />
+    <state width="1860" height="404" key="GridCell.Tab.0.right/0.0.1920.1160/-1920.290.1920.1040@0.0.1920.1160" timestamp="1643702793432" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1641892870812">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

@@ -133,7 +133,7 @@ insert into sensordata(readingID, originID, payload, timeOfCapture)
 values ('12a16cf-1c84-4772-8f15-2471b522741f8b', 'eui-a8610a3032306f09', '{"temperature": "789"}', '2022-01-11');
 
 insert into stations (stationID, joinEUI, devAddr,stationName,longitude,latitude,numberOfMessages,lastSeen,supportedMeasurements,dateCreated)
-values ('eui-a8610a3032306f09', 'joinEUI', 'devAddr', 'stationName', 12, 21, 0, '2022-01-09', 'supportedMessages', '2022-01-09');
+values ('eui-a8610a30323e6d10', '123AD69902301982', '260BC33C', 'Station-2', 12, 21, 0, '2022-01-21 23:19:11.350', '[    "temperature",    "humidity",    "pressure", "altitude"  ]', '2022-01-22');
 
 
 exec dbo.spSensorData_GetEntryLatestSensorReadingByStationID "eui-a8610a3032306f09"
@@ -165,7 +165,7 @@ select*from stations
 
 delete from sensordata where originID = 'eui-a8610a3032306f09'
 delete from sensordata where originID = 'eui-a8610a3032306f09'
-select * from sensordata order by lineNum
+select * from sensordata order by lineNum desc
 ;with tmp as (
 select *,
 table_seq = row_number() over (order by id),
