@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac493046-5487-4b63-8cd6-30493d6ba743" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Documentation/LoRa_Sensor_Network_Presentation.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Documentation/LoRa_Sensor_Network_Presentation.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Documentation/Graphics/GooglePlay_Feature_Graphic.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Documentation/Graphics/GooglePlay_Feature_Graphic.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL_Queries/LoRa_Sensor_Network_SQL_Scripts/LoRa_Sensor_Network_SQL_Scripts/Production_Server_Setup_Script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
