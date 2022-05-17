@@ -10,5 +10,5 @@ Currently the documentation is available in:
 The live applications have been discontinuted due to exhaustion of allocated resources.
 
 ---
-# STATION STATUS: OFFLINE FOR UPGRADES
-# SERVER STATUS: ONLINE
+# STATION STATUS: OFFLINE PERMANENTLY
+# SERVER STATUS: OFFLINE PERMANENTLY
